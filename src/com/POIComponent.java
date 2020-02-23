@@ -6,6 +6,10 @@ public class POIComponent implements IComponent {
 
     private IMediator mediator;
 
+    public POIComponent(IMediator mediator) {
+        this.mediator = mediator;
+    }
+
     @Override
     public Pane getView() {
         return null;
