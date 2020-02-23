@@ -7,11 +7,17 @@ import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Mediator extends Application implements IMediator, IObserver {
 
+    private Set<IComponent> components;
+
     @Override
     public void start(Stage stage) throws Exception {
+        initComponents();
+
         // Tab pane
         TabPane tabPane = new TabPane();
 
@@ -28,6 +34,22 @@ public class Mediator extends Application implements IMediator, IObserver {
         stage.show();
     }
 
+    private void initComponents() {
+        components = new HashSet<>();
+
+        // Binding GIS component
+        GISComponent gisComponent = new GISComponent();
+        this.registerGISComponent(gisComponent);
+
+        // Binding GPS component
+        GPSComponent gpsComponent = new GPSComponent();
+        this.registerGPSComponent(gpsComponent);
+
+        // Binding POI component
+        POIComponent poiComponent = new POIComponent();
+        this.registerPOIComponent(poiComponent);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -39,16 +61,16 @@ public class Mediator extends Application implements IMediator, IObserver {
 
     @Override
     public void registerGISComponent(GISComponent gisComponent) {
-
+        components.add(gisComponent);
     }
 
     @Override
     public void registerGPSComponent(GPSComponent gpsComponent) {
-
+        components.add(gpsComponent);
     }
 
     @Override
     public void registerPOIComponent(POIComponent poiComponent) {
-
+        components.add(poiComponent);
     }
 }
