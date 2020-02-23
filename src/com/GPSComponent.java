@@ -6,17 +6,25 @@ public class GPSComponent implements IComponent {
 
     private IMediator mediator;
 
+    private Pane view;
+    private final String name = "GPS";
+
     public GPSComponent(IMediator mediator) {
         this.mediator = mediator;
+        initView();
+    }
+
+    private void initView() {
+        view = new Pane();
     }
 
     @Override
     public Pane getView() {
-        return null;
+        return view;
     }
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 }

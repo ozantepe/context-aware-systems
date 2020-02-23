@@ -21,13 +21,11 @@ public class Mediator extends Application implements IMediator, IObserver {
         // Tab pane
         TabPane tabPane = new TabPane();
 
-        Tab gisTab = new Tab("MAP");
-        gisTab.setClosable(false);
-        Tab gpsTab = new Tab("GPS");
-        gpsTab.setClosable(false);
-        Tab poiTab = new Tab("POI");
-        poiTab.setClosable(false);
-        tabPane.getTabs().addAll(gisTab, gpsTab, poiTab);
+        for (IComponent component : components) {
+            Tab tab = new Tab(component.getName(), component.getView());
+            tab.setClosable(false);
+            tabPane.getTabs().add(tab);
+        }
 
         stage.setTitle("CAS Project");
         stage.setScene(new Scene(tabPane, 640, 480));
