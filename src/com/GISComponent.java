@@ -4,6 +4,8 @@ import javafx.scene.layout.Pane;
 
 public class GISComponent implements IComponent {
 
+    private IMediator mediator;
+
     @Override
     public Pane getView() {
         return null;
