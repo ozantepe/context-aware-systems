@@ -38,15 +38,15 @@ public class Mediator extends Application implements IMediator, IObserver {
         components = new HashSet<>();
 
         // Binding GIS component
-        GISComponent gisComponent = new GISComponent();
+        GISComponent gisComponent = new GISComponent(this);
         this.registerGISComponent(gisComponent);
 
         // Binding GPS component
-        GPSComponent gpsComponent = new GPSComponent();
+        GPSComponent gpsComponent = new GPSComponent(this);
         this.registerGPSComponent(gpsComponent);
 
         // Binding POI component
-        POIComponent poiComponent = new POIComponent();
+        POIComponent poiComponent = new POIComponent(this);
         this.registerPOIComponent(poiComponent);
     }
 
