@@ -6,13 +6,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
-import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mediator extends Application implements IMediator, IObserver {
 
-    private Set<IComponent> components;
+    private List<IComponent> components;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -33,19 +32,19 @@ public class Mediator extends Application implements IMediator, IObserver {
     }
 
     private void initComponents() {
-        components = new HashSet<>();
+        components = new ArrayList<>();
 
         // Binding GIS component
         GISComponent gisComponent = new GISComponent(this);
-        this.registerGISComponent(gisComponent);
+        this.registerComponent(gisComponent);
 
         // Binding GPS component
         GPSComponent gpsComponent = new GPSComponent(this);
-        this.registerGPSComponent(gpsComponent);
+        this.registerComponent(gpsComponent);
 
         // Binding POI component
         POIComponent poiComponent = new POIComponent(this);
-        this.registerPOIComponent(poiComponent);
+        this.registerComponent(poiComponent);
     }
 
     public static void main(String[] args) {
@@ -53,22 +52,12 @@ public class Mediator extends Application implements IMediator, IObserver {
     }
 
     @Override
-    public void update(BufferedImage bufferedImage) {
+    public void update() {
 
     }
 
     @Override
-    public void registerGISComponent(GISComponent gisComponent) {
-        components.add(gisComponent);
-    }
-
-    @Override
-    public void registerGPSComponent(GPSComponent gpsComponent) {
-        components.add(gpsComponent);
-    }
-
-    @Override
-    public void registerPOIComponent(POIComponent poiComponent) {
-        components.add(poiComponent);
+    public void registerComponent(IComponent component) {
+        components.add(component);
     }
 }
