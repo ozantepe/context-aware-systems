@@ -62,6 +62,5 @@ public class PoiObject {
         SCHOOL,
         RESTAURANT,
         HOSPITAL
-
     }
 }

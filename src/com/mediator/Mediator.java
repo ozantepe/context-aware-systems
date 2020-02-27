@@ -1,9 +1,9 @@
 package com.mediator;
 
-import com.component.GISComponent;
 import com.component.GPSComponent;
 import com.component.IComponent;
 import com.component.POIComponent;
+import com.component.gis.GISComponent;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
