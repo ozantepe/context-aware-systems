@@ -1,5 +1,9 @@
-package com;
+package com.mediator;
 
+import com.component.GISComponent;
+import com.component.GPSComponent;
+import com.component.IComponent;
+import com.component.POIComponent;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -9,7 +13,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mediator extends Application implements IMediator, IObserver {
+public class Mediator extends Application implements IMediator {
 
     private List<IComponent> components;
 
@@ -52,7 +56,7 @@ public class Mediator extends Application implements IMediator, IObserver {
     }
 
     @Override
-    public void update() {
+    public void notify(IComponent sender, String message, Object data) {
 
     }
 

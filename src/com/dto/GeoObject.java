@@ -1,4 +1,4 @@
-package com;
+package com.dto;
 
 public class GeoObject {
 }

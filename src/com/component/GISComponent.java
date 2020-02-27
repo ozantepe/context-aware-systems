@@ -1,15 +1,16 @@
-package com;
+package com.component;
 
+import com.mediator.IMediator;
 import javafx.scene.layout.Pane;
 
-public class GPSComponent implements IComponent {
+public class GISComponent implements IComponent {
 
     private IMediator mediator;
 
     private Pane view;
-    private final String name = "GPS";
+    private final String name = "MAP";
 
-    public GPSComponent(IMediator mediator) {
+    public GISComponent(IMediator mediator) {
         this.mediator = mediator;
         initView();
     }
@@ -26,5 +27,10 @@ public class GPSComponent implements IComponent {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void update(String message, Object data) {
+
     }
 }

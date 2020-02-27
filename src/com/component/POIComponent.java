@@ -1,5 +1,6 @@
-package com;
+package com.component;
 
+import com.mediator.IMediator;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -50,5 +51,10 @@ public class POIComponent implements IComponent {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void update(String message, Object data) {
+
     }
 }
