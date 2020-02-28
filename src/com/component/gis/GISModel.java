@@ -16,9 +16,22 @@ public class GISModel {
 
     private IDataObserver observer;
     private IGeoServer geoServer;
-    private List<GeoObject> data;
+    private List<GeoObject> originalData;
+    private List<GeoObject> dataToShow;
     private BufferedImage canvas;
     private Matrix matrix;
+
+    public List<GeoObject> getOriginalData() {
+        return originalData;
+    }
+
+    public List<GeoObject> getDataToShow() {
+        return dataToShow;
+    }
+
+    public void setDataToShow(List<GeoObject> dataToShow) {
+        this.dataToShow = dataToShow;
+    }
 
     void setWidth(double width) {
         this.width = (int) width;
@@ -40,7 +53,8 @@ public class GISModel {
 
     void loadData() {
         this.geoServer.connect(this.geoServer.getConn(), this.geoServer.getUser(), this.geoServer.getPass());
-        data = this.geoServer.loadData();
+        originalData = this.geoServer.loadData();
+        dataToShow = originalData;
     }
 
     BufferedImage initCanvas(int width, int height) {
@@ -59,7 +73,7 @@ public class GISModel {
 
         // Draw map
         g.setColor(Color.BLACK);
-        for (GeoObject geoObject : data) {
+        for (GeoObject geoObject : dataToShow) {
             if (matrix != null) {
                 DrawingContext.drawObject(geoObject, g, matrix);
             }
@@ -72,13 +86,13 @@ public class GISModel {
     }
 
     void zoomToFit() {
-        Rectangle map = getMapBounds(data);
+        Rectangle map = getMapBounds(dataToShow);
         Rectangle win = new Rectangle(0, 0, width, height);
         matrix = Matrix.zoomToFit(map, win);
     }
 
     Rectangle getMapBounds(List<GeoObject> data) {
-        if (data != null) {
+        if (data != null && !data.isEmpty()) {
             Rectangle rect = data.get(0).getBounds();
             for (GeoObject geoObject : data) {
                 rect = rect.union(geoObject.getBounds());

@@ -4,19 +4,19 @@ import com.database.server.IGeoServer;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 public class GISController {
 
     private GISModel gisModel;
 
-    private IGeoServer geoServer;
-
     GISController(GISModel gisModel, IGeoServer geoServer) {
         this.gisModel = gisModel;
-        this.geoServer = geoServer;
+        this.gisModel.setGeoServer(geoServer);
     }
 
     void loadData() {
-        gisModel.setGeoServer(geoServer);
         gisModel.loadData();
         gisModel.repaint();
     }
@@ -46,6 +46,16 @@ public class GISController {
 
     void drag(int x, int y) {
         gisModel.drag(x, y);
+        gisModel.repaint();
+    }
+
+    void update(Object data) {
+        gisModel.setDataToShow(new ArrayList<>(gisModel.getOriginalData()));
+
+        Set<Integer> typeIds = (Set<Integer>) data;
+        if (!typeIds.isEmpty()) {
+            gisModel.getDataToShow().removeIf(geoObject -> !typeIds.contains(geoObject.getType()));
+        }
         gisModel.repaint();
     }
 }

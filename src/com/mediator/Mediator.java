@@ -4,6 +4,8 @@ import com.component.GPSComponent;
 import com.component.IComponent;
 import com.component.POIComponent;
 import com.component.gis.GISComponent;
+import com.database.server.IGeoServer;
+import com.database.server.OSMGeoServer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -12,10 +14,12 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Mediator extends Application implements IMediator {
 
     private List<IComponent> components;
+    private IGeoServer geoServer;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -37,9 +41,10 @@ public class Mediator extends Application implements IMediator {
 
     private void initComponents() {
         components = new ArrayList<>();
+        geoServer = new OSMGeoServer();
 
         // Binding GIS component
-        GISComponent gisComponent = new GISComponent(this);
+        GISComponent gisComponent = new GISComponent(this, geoServer);
         this.registerComponent(gisComponent);
 
         // Binding GPS component
@@ -57,7 +62,22 @@ public class Mediator extends Application implements IMediator {
 
     @Override
     public void notify(IComponent sender, String message, Object data) {
-
+        String nameOfSender = sender.getName();
+        switch (nameOfSender) {
+            case "GIS":
+            case "GPS": {
+                IComponent gisComponent = components.stream().filter(component -> component instanceof GPSComponent).collect(Collectors.toList()).get(0);
+                gisComponent.update("sending GeoObjects from GPS component to GIS component", data);
+                break;
+            }
+            case "POI": {
+                IComponent gisComponent = components.stream().filter(component -> component instanceof GISComponent).collect(Collectors.toList()).get(0);
+                gisComponent.update("sending PoiObjects from POI component to GIS component", data);
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     @Override
