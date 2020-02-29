@@ -52,9 +52,14 @@ public class GISModel {
     }
 
     void loadData() {
-        this.geoServer.connect(this.geoServer.getConn(), this.geoServer.getUser(), this.geoServer.getPass());
-        originalData = this.geoServer.loadData();
-        dataToShow = originalData;
+        boolean isConnectionSuccessful = this.geoServer.connect(this.geoServer.getConn(), this.geoServer.getUser(), this.geoServer.getPass());
+        if (isConnectionSuccessful) {
+            System.out.println("Connection to database is successful...");
+            originalData = this.geoServer.loadData();
+            dataToShow = originalData;
+        } else {
+            System.out.println("Connection to database is failed...");
+        }
     }
 
     BufferedImage initCanvas(int width, int height) {

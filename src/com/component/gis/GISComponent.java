@@ -1,12 +1,13 @@
 package com.component.gis;
 
 import com.component.IComponent;
+import com.component.IObserver;
 import com.database.server.IGeoServer;
 import com.mediator.IMediator;
 import com.mediator.Mediator;
 import javafx.scene.layout.Pane;
 
-public class GISComponent implements IComponent {
+public class GISComponent implements IComponent, IObserver {
 
     private IMediator mediator;
 

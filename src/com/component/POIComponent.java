@@ -87,9 +87,4 @@ public class POIComponent implements IComponent {
     public String getName() {
         return name;
     }
-
-    @Override
-    public void update(String message, Object data) {
-
-    }
 }

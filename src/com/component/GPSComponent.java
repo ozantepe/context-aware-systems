@@ -28,9 +28,4 @@ public class GPSComponent implements IComponent {
     public String getName() {
         return name;
     }
-
-    @Override
-    public void update(String message, Object data) {
-
-    }
 }

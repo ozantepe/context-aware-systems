@@ -65,13 +65,9 @@ public class Mediator extends Application implements IMediator {
         String nameOfSender = sender.getName();
         switch (nameOfSender) {
             case "GIS":
-            case "GPS": {
-                IComponent gisComponent = components.stream().filter(component -> component instanceof GPSComponent).collect(Collectors.toList()).get(0);
-                gisComponent.update("sending GeoObjects from GPS component to GIS component", data);
-                break;
-            }
+            case "GPS":
             case "POI": {
-                IComponent gisComponent = components.stream().filter(component -> component instanceof GISComponent).collect(Collectors.toList()).get(0);
+                GISComponent gisComponent = (GISComponent) components.stream().filter(component -> component instanceof GISComponent).collect(Collectors.toList()).get(0);
                 gisComponent.update("sending PoiObjects from POI component to GIS component", data);
                 break;
             }
