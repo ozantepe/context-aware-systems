@@ -1,6 +1,8 @@
 package com.component;
 
+import com.MessageType;
+
 public interface IObserver {
 
-    void update(String message, Object data);
+    void update(MessageType messageType, Object data);
 }

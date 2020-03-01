@@ -1,5 +1,6 @@
 package com.component.gis;
 
+import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
@@ -49,13 +50,18 @@ public class GISController {
         gisModel.repaint();
     }
 
-    void update(Object data) {
+    void updatePOI(Object data) {
         gisModel.setDataToShow(new ArrayList<>(gisModel.getOriginalData()));
-
         Set<Integer> typeIds = (Set<Integer>) data;
         if (!typeIds.isEmpty()) {
             gisModel.getDataToShow().removeIf(geoObject -> !typeIds.contains(geoObject.getType()));
         }
+        gisModel.repaint();
+    }
+
+    void updateGPS(Object data) {
+        GeoObject geoObject = (GeoObject) data;
+        gisModel.getDataToShow().add(geoObject);
         gisModel.repaint();
     }
 }

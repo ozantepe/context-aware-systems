@@ -1,5 +1,6 @@
 package com.component.gis;
 
+import com.MessageType;
 import com.component.IComponent;
 import com.component.IObserver;
 import com.database.server.IGeoServer;
@@ -40,8 +41,18 @@ public class GISComponent implements IComponent, IObserver {
     }
 
     @Override
-    public void update(String message, Object data) {
-        System.out.println(message);
-        controller.update(data);
+    public void update(MessageType messageType, Object data) {
+        switch (messageType) {
+            case FROM_POI: {
+                controller.updatePOI(data);
+                break;
+            }
+            case FROM_GPS: {
+                controller.updateGPS(data);
+                break;
+            }
+            default:
+                break;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.component;
 
+import com.MessageType;
 import com.dto.PoiType;
 import com.mediator.IMediator;
 import javafx.geometry.Insets;
@@ -30,7 +31,6 @@ public class POIComponent implements IComponent {
     private void initView() {
         BorderPane mainPane = new BorderPane();
         mainPane.setPadding(new Insets(20, 0, 20, 20));
-        view = new Pane();
 
         VBox vBox = new VBox(8);
 
@@ -75,7 +75,7 @@ public class POIComponent implements IComponent {
 
     private void sendPoiTypes() {
         Set<Integer> typeIds = poiTypes.stream().map(PoiType::getTypeId).collect(Collectors.toSet());
-        mediator.notify(this, "Sending POI objects", typeIds);
+        mediator.notify(this, MessageType.FROM_POI, typeIds);
     }
 
     @Override
