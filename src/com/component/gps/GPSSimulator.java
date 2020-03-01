@@ -42,7 +42,7 @@ public class GPSSimulator extends BufferedReader {
 	@Override
 	public String readLine() throws IOException {
 		String line = super.readLine();
-		if (line.contains(mFilter)) {
+		if (line != null && line.contains(mFilter)) {
 			try {
 				Thread.sleep(mSleep);
 			} catch (InterruptedException _e) {

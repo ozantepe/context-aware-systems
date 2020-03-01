@@ -23,7 +23,7 @@ public class GPSComponent implements IComponent, INMEAUpdate {
     private NMEAParser mNMEAParser;
     private static final String NMEA_FILE_NAME = "src/com/component/gps/NMEA-data-1.log";
     private static final String NMEA_FILTER = "$GPGGA";
-    private static final int NMEA_DELAY = 2000;
+    private static final int NMEA_DELAY = 100;
 
     public GPSComponent(IMediator mediator) {
         this.mediator = mediator;
