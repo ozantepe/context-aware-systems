@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contextElement
+        xsi:schemaLocation="http://www.fh-hagenberg.at/cas contextElement.xsd"
+        xmlns="http://www.fh-hagenberg.at/cas"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <contextId>23</contextId>
+    <contextKey>position</contextKey>
+    <contextValue>
+        <unit>degreeminutes</unit>
+        <data>
+            <latitude>6168389</latitude>
+            <longitude>1615775</longitude>
+        </data>
+    </contextValue>
+</contextElement> 

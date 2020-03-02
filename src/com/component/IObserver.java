@@ -1,6 +1,6 @@
 package com.component;
 
-import com.MessageType;
+import com.dto.MessageType;
 
 public interface IObserver {
 

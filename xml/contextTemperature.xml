@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contextElement
+        xsi:schemaLocation="http://www.fh-hagenberg.at/cas contextElement.xsd"
+        xmlns="http://www.fh-hagenberg.at/cas"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <contextId>22</contextId>
+    <contextKey>temperature</contextKey>
+    <contextValue>
+        <unit>degrees celsius</unit>
+        <value>12</value>
+    </contextValue>
+</contextElement> 

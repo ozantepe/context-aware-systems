@@ -1,9 +1,9 @@
 package com.component.gis;
 
-import com.MessageType;
 import com.component.IComponent;
 import com.component.IObserver;
 import com.database.server.IGeoServer;
+import com.dto.MessageType;
 import com.mediator.IMediator;
 import com.mediator.Mediator;
 import javafx.scene.layout.Pane;

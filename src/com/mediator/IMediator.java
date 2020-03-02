@@ -1,7 +1,7 @@
 package com.mediator;
 
-import com.MessageType;
 import com.component.IComponent;
+import com.dto.MessageType;
 
 public interface IMediator {
 

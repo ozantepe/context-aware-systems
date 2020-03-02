@@ -1,5 +1,6 @@
-package com.component.gps;
+package com.component.gps.parser;
 
+import com.component.gps.GPSSimulator;
 import com.component.gps.data.*;
 
 import java.io.IOException;

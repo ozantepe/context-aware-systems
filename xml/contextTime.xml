@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contextElement
+        xsi:schemaLocation="http://www.fh-hagenberg.at/cas contextElement.xsd"
+        xmlns="http://www.fh-hagenberg.at/cas"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <contextId>24</contextId>
+    <contextKey>time</contextKey>
+    <contextValue>
+        <unit>seconds</unit>
+        <value>1542357918817</value>
+    </contextValue>
+</contextElement> 

@@ -1,0 +1,32 @@
+<xs:schema
+        attributeFormDefault="unqualified"
+        elementFormDefault="qualified"
+        targetNamespace="http://www.fh-hagenberg.at/cas"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="contextElement">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:byte" name="contextId" minOccurs="1" maxOccurs="1"/>
+                <xs:element type="xs:string" name="contextKey" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="contextValue" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:string" name="unit" minOccurs="1" maxOccurs="1"/>
+                            <xs:choice>
+                                <xs:element name="data">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element type="xs:float" name="latitude" minOccurs="1" maxOccurs="1"/>
+                                            <xs:element type="xs:float" name="longitude" minOccurs="1" maxOccurs="1"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:float" name="value" minOccurs="1" maxOccurs="1"/>
+                            </xs:choice>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

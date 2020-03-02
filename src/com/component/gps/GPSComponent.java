@@ -1,12 +1,13 @@
 package com.component.gps;
 
-import com.MessageType;
 import com.component.IComponent;
 import com.component.gps.data.INMEAUpdate;
 import com.component.gps.data.NMEAInfo;
+import com.component.gps.parser.NMEAParser;
 import com.component.gps.ui.DataView;
 import com.component.gps.ui.SatView;
 import com.component.gps.ui.TimeView;
+import com.dto.MessageType;
 import com.mediator.IMediator;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;

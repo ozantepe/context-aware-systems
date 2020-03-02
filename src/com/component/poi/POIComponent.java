@@ -1,6 +1,7 @@
-package com.component;
+package com.component.poi;
 
-import com.MessageType;
+import com.component.IComponent;
+import com.dto.MessageType;
 import com.dto.PoiType;
 import com.mediator.IMediator;
 import javafx.geometry.Insets;

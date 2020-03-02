@@ -1,15 +1,16 @@
 package com.mediator;
 
-import com.MessageType;
 import com.component.IComponent;
-import com.component.POIComponent;
+import com.component.aal.AALComponent;
 import com.component.gis.GISComponent;
 import com.component.gps.GPSComponent;
 import com.component.gps.data.NMEAInfo;
+import com.component.poi.POIComponent;
 import com.database.feature.GeoObject;
 import com.database.feature.GeoObjectPart_Point;
 import com.database.server.IGeoServer;
 import com.database.server.OSMGeoServer;
+import com.dto.MessageType;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -61,6 +62,10 @@ public class Mediator extends Application implements IMediator {
         // Binding POI component
         POIComponent poiComponent = new POIComponent(this);
         this.registerComponent(poiComponent);
+
+        // Binding AAL component
+        AALComponent aalComponent = new AALComponent(this);
+        this.registerComponent(aalComponent);
     }
 
     public static void main(String[] args) {
@@ -85,6 +90,8 @@ public class Mediator extends Application implements IMediator {
 
             // then send it to gis component
             gisComponent.update(messageType, geoObject);
+            System.out.println(messageType.getMessage());
+        } else if (nameOfSender.equals("AAL") && messageType.equals(MessageType.FROM_AAL)) {
             System.out.println(messageType.getMessage());
         } else {
             System.out.println("Invalid notification !!!");
