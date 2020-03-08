@@ -22,8 +22,8 @@ public class GPSComponent implements IComponent, INMEAUpdate {
     private final String name = "GPS";
 
     private NMEAParser mNMEAParser;
-    private static final String NMEA_FILE_NAME = "src/com/component/gps/NMEA-data-1.log";
-    private static final String NMEA_FILTER = "$GPGGA";
+    private static final String NMEA_FILE_NAME = "src/com/component/gps/NMEA-data-2.log";
+    private static final String NMEA_FILTER = "$GNGGA";
     private static final int NMEA_DELAY = 100;
 
     public GPSComponent(IMediator mediator) {
