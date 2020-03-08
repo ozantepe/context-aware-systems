@@ -1,6 +1,7 @@
 package com.component.gis;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import java.awt.image.BufferedImage;
 
@@ -18,6 +20,10 @@ public class GISView extends BorderPane implements IDataObserver {
     private BufferedImage bufferedImage;
 
     private Canvas canvas;
+    private Canvas canvasOverlay;
+    private StackPane canvasPane;
+
+    private boolean isDragging;
 
     private static final String BUTTON_LOAD_ID = "gis_load";
     private static final String BUTTON_ZOOM_TO_FIT_ID = "gis_ztf";
@@ -74,15 +80,24 @@ public class GISView extends BorderPane implements IDataObserver {
         buttonPane.getChildren().add(button);
 
 
-        StackPane canvasPane = new StackPane();
+        canvasPane = new StackPane();
         canvasPane.setMinSize(0, 0);
 
         canvas = new Canvas();
+        canvasOverlay = new Canvas();
 
-        canvasPane.getChildren().add(canvas);
+        canvasPane.getChildren().addAll(canvas, canvasOverlay);
 
         canvas.widthProperty().bind(canvasPane.widthProperty());
         canvas.heightProperty().bind(canvasPane.heightProperty());
+
+        canvasOverlay.widthProperty().bind(canvasPane.widthProperty());
+        canvasOverlay.heightProperty().bind(canvasPane.heightProperty());
+
+        canvasOverlay.setOnMousePressed(event -> gisController.mousePressed(event));
+        canvasOverlay.setOnMouseDragged(event -> gisController.mouseDragged(this, event));
+        canvasOverlay.setOnMouseReleased(event -> gisController.mouseReleased(event));
+        canvasOverlay.setOnScroll(event -> gisController.scroll(event));
 
         canvasPane.widthProperty().addListener((observable, oldValue, newValue) -> gisController.canvasPaneSizeChanged(observable));
         canvasPane.heightProperty().addListener((observable, oldValue, newValue) -> gisController.canvasPaneSizeChanged(observable));
@@ -97,14 +112,46 @@ public class GISView extends BorderPane implements IDataObserver {
     public void update(BufferedImage bufferedImage) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.restore();
+        isDragging = false;
         this.bufferedImage = bufferedImage;
         repaint();
     }
 
     private void repaint() {
         WritableImage writable = SwingFXUtils.toFXImage(bufferedImage, null);
+        clearXOR();
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.drawImage(writable, 0, 0);
+    }
+
+    void drawXOR(Rectangle2D _rect) {
+        GraphicsContext g = canvasOverlay.getGraphicsContext2D();
+        g.clearRect(0, 0, canvasPane.getWidth(), canvasPane.getHeight());
+        g.setStroke(Color.DARKGOLDENROD);
+        g.strokeRect(_rect.getMinX(), _rect.getMinY(), _rect.getWidth(), _rect.getHeight());
+    }
+
+    void clearXOR() {
+        GraphicsContext g = canvasOverlay.getGraphicsContext2D();
+        g.clearRect(0, 0, canvasPane.getWidth(), canvasPane.getHeight());
+    }
+
+    void translate(double _dX, double _dY) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        if (!isDragging) {
+            isDragging = true;
+            gc.save();
+        }
+
+        int width = (int) canvas.getWidth();
+        int height = (int) canvas.getHeight();
+        int delta = 2;
+        gc.clearRect(0, delta, width, height); // top
+        gc.clearRect(0, height - delta, width, height); // bottom
+
+        gc.translate(_dX, _dY);
+        WritableImage writable = SwingFXUtils.toFXImage(bufferedImage, null);
         gc.drawImage(writable, 0, 0);
     }
 }

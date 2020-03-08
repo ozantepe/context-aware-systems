@@ -6,8 +6,10 @@ import com.database.utilities.DrawingContext;
 import com.database.utilities.Matrix;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Set;
 
 public class GISModel {
 
@@ -35,12 +37,12 @@ public class GISModel {
 
     void setWidth(double width) {
         this.width = (int) width;
-        canvas = null; // window size changed ... invalidate canvas
+        canvas = null;
     }
 
     void setHeight(double height) {
         this.height = (int) height;
-        canvas = null; // window size changed ... invalidate canvas
+        canvas = null;
     }
 
     public void addListener(IDataObserver observer) {
@@ -92,8 +94,13 @@ public class GISModel {
 
     void zoomToFit() {
         Rectangle map = getMapBounds(dataToShow);
-        Rectangle win = new Rectangle(0, 0, width, height);
-        matrix = Matrix.zoomToFit(map, win);
+        Rectangle window = new Rectangle(0, 0, width, height);
+        matrix = Matrix.zoomToFit(map, window);
+    }
+
+    protected void zoomToFit(Rectangle world) {
+        Rectangle window = new Rectangle(0, 0, width, height);
+        matrix = Matrix.zoomToFit(world, window);
     }
 
     Rectangle getMapBounds(List<GeoObject> data) {
@@ -111,6 +118,12 @@ public class GISModel {
         int centerX = canvas.getWidth(null) / 2;
         int centerY = canvas.getHeight(null) / 2;
         zoom(new Point(centerX, centerY), factor);
+    }
+
+    void zoom(Rectangle2D _rect) {
+        Rectangle windowRect = _rect.getBounds();
+        Rectangle worldRect = matrix.invers().multiply(windowRect);
+        zoomToFit(worldRect);
     }
 
     void zoom(Point point, double factor) {
