@@ -1,7 +1,7 @@
 package com.component.gis;
 
-import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
+import com.dto.PositionPOI;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Rectangle2D;
@@ -70,8 +70,8 @@ public class GISController {
     }
 
     void updateGPS(Object data) {
-        GeoObject geoObject = (GeoObject) data;
-        gisModel.getDataToShow().add(geoObject);
+        PositionPOI positionPOI = (PositionPOI) data;
+        gisModel.getDataToShow().add(positionPOI);
         gisModel.repaint();
     }
 

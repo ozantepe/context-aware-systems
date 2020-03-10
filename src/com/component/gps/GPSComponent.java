@@ -8,6 +8,7 @@ import com.component.gps.ui.DataView;
 import com.component.gps.ui.SatView;
 import com.component.gps.ui.TimeView;
 import com.dto.MessageType;
+import com.dto.PositionPOI;
 import com.mediator.IMediator;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -88,9 +89,10 @@ public class GPSComponent implements IComponent, INMEAUpdate {
     }
 
     @Override
-    public void update(NMEAInfo data) {
-        if (data != null) {
-            mediator.notify(this, MessageType.FROM_GPS, data);
+    public void update(NMEAInfo nmeaInfo) {
+        if (nmeaInfo != null) {
+            PositionPOI positionPOI = new PositionPOI("userLocation", 9999, (int) (nmeaInfo.getLongitude() * 1000000), (int) (nmeaInfo.getLatitude() * 1000000));
+            mediator.notify(this, MessageType.FROM_GPS, positionPOI);
         }
     }
 

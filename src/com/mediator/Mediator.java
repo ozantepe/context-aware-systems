@@ -4,10 +4,7 @@ import com.component.IComponent;
 import com.component.aal.AALComponent;
 import com.component.gis.GISComponent;
 import com.component.gps.GPSComponent;
-import com.component.gps.data.NMEAInfo;
 import com.component.poi.POIComponent;
-import com.database.feature.GeoObject;
-import com.database.feature.GeoObjectPart_Point;
 import com.database.server.IGeoServer;
 import com.database.server.OSMGeoServer;
 import com.dto.MessageType;
@@ -17,12 +14,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.database.feature.GeoObjectPartType.UNDEFINED;
 
 public class Mediator extends Application implements IMediator {
 
@@ -74,28 +67,23 @@ public class Mediator extends Application implements IMediator {
 
     @Override
     public void notify(IComponent sender, MessageType messageType, Object data) {
-        String nameOfSender = sender.getName();
-        GISComponent gisComponent = (GISComponent) components.stream().filter(component -> component instanceof GISComponent).collect(Collectors.toList()).get(0);
+        if (messageType.equals(MessageType.FROM_POI)) {
+            // update gis component
+            updateGIS(messageType, data);
+        } else if (messageType.equals(MessageType.FROM_GPS)) {
+            // update gis
+            updateGIS(messageType, data);
+        } else if (messageType.equals(MessageType.FROM_AAL)) {
 
-        if (nameOfSender.equals("POI") && messageType.equals(MessageType.FROM_POI)) {
-            gisComponent.update(messageType, data);
-            System.out.println(messageType.getMessage());
-        } else if (nameOfSender.equals("GPS") && messageType.equals(MessageType.FROM_GPS)) {
-            // convert nmea info to geo object
-            NMEAInfo nmeaInfo = (NMEAInfo) data;
-            GeoObjectPart_Point geoPoint = new GeoObjectPart_Point(
-                    new Point((int) nmeaInfo.getLongitude(), (int) nmeaInfo.getLatitude()), UNDEFINED);
-            GeoObject geoObject = new GeoObject("userLocation", 9999);
-            geoObject.addPart(geoPoint);
-
-            // then send it to gis component
-            gisComponent.update(messageType, geoObject);
-            System.out.println(messageType.getMessage());
-        } else if (nameOfSender.equals("AAL") && messageType.equals(MessageType.FROM_AAL)) {
-            System.out.println(messageType.getMessage());
         } else {
-            System.out.println("Invalid notification !!!");
+            System.out.print("Unhandled message: ");
         }
+        System.out.println(messageType.getMessage());
+    }
+
+    private void updateGIS(MessageType messageType, Object data) {
+        GISComponent gisComponent = (GISComponent) components.stream().filter(component -> component instanceof GISComponent).findFirst().get();
+        gisComponent.update(messageType, data);
     }
 
     @Override
