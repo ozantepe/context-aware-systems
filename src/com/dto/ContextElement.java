@@ -2,52 +2,43 @@ package com.dto;
 
 public abstract class ContextElement {
 
-    protected ContextKey mContextKey;
-    protected int mContextId;
-    protected String mUnit;
+    protected ContextKey contextKey;
+    protected int contextId;
+    protected String unit;
 
     public ContextElement() {
 
     }
 
     public ContextElement(int contextId, ContextKey contextKey, String unit) {
-        mContextId = contextId;
-        mContextKey = contextKey;
-        mUnit = unit;
+        this.contextId = contextId;
+        this.contextKey = contextKey;
+        this.unit = unit;
     }
 
     public int getContextId() {
-        return mContextId;
+        return contextId;
     }
 
     public void setContextId(int contextId) {
-        mContextId = contextId;
+        this.contextId = contextId;
     }
 
     public ContextKey getContextKey() {
-        return mContextKey;
+        return contextKey;
     }
 
     public void setContextKey(ContextKey contextKey) {
-        mContextKey = contextKey;
+        this.contextKey = contextKey;
     }
 
     public String getUnit() {
-        return mUnit;
+        return unit;
     }
 
     public void setUnit(String unit) {
-        mUnit = unit;
+        this.unit = unit;
     }
 
     public abstract int getValueAsInt();
-
-    @Override
-    public String toString() {
-        return "com.dto.ContextElement{" +
-                "mContextKey=" + mContextKey +
-                ", mContextId=" + mContextId +
-                ", mUnit='" + mUnit + '\'' +
-                '}';
-    }
 }

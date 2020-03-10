@@ -2,62 +2,50 @@ package com.dto;
 
 public class ContextTime extends ContextElement {
 
-    private int mHours;
-    private int mMinutes;
-    private int mSeconds;
+    private int hours;
+    private int minutes;
+    private int seconds;
 
     public ContextTime() {
     }
 
     public ContextTime(int contextId, ContextKey contextKey, String unit, int hours, int minutes, int seconds) {
         super(contextId, contextKey, unit);
-        mHours = hours;
-        mMinutes = minutes;
-        mSeconds = seconds;
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
     }
 
     public int getHours() {
-        return mHours;
+        return hours;
     }
 
     public void setHours(int hours) {
-        mHours = hours;
+        this.hours = hours;
     }
 
     public int getMinutes() {
-        return mMinutes;
+        return minutes;
     }
 
     public void setMinutes(int minutes) {
-        mMinutes = minutes;
+        this.minutes = minutes;
     }
 
     public int getSeconds() {
-        return mSeconds;
+        return seconds;
     }
 
     public void setSeconds(int seconds) {
-        mSeconds = seconds;
+        this.seconds = seconds;
     }
 
     public boolean isNight() {
-        return mHours >= 18 || mHours < 6;
+        return hours >= 18 || hours < 6;
     }
 
     @Override
     public int getValueAsInt() {
         throw new RuntimeException("getValueAsInt is not implemented!");
-    }
-
-    @Override
-    public String toString() {
-        return "ContextTime{" +
-                "mHours=" + mHours +
-                ", mMinutes=" + mMinutes +
-                ", mSeconds=" + mSeconds +
-                ", mContextKey=" + mContextKey +
-                ", mContextId=" + mContextId +
-                ", mUnit='" + mUnit + '\'' +
-                '}';
     }
 }

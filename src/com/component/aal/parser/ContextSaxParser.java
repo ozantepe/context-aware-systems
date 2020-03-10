@@ -10,7 +10,9 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Stack;
+import java.util.TimeZone;
 
 public class ContextSaxParser extends DefaultHandler implements IContextParser {
 
@@ -21,34 +23,29 @@ public class ContextSaxParser extends DefaultHandler implements IContextParser {
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
 
-    private int mContextId = 0;
-    private ContextKey mContextKey = null;
-    private String mUnit = null;
-    private double mLatitude = 0;
-    private double mLongitude = 0;
-    private String mValue = null;
+    private int contextId = 0;
+    private ContextKey contextKey = null;
+    private String unit = null;
+    private double latitude = 0;
+    private double longitude = 0;
+    private String value = null;
 
-    private Map<String, Boolean> mStates = new HashMap<String, Boolean>();
-    private SAXParser mParser;
-
-    // List of context temperature data.
-    private List<ContextTemperature> contectTemp = new ArrayList<ContextTemperature>();
+    private SAXParser parser;
 
     // Stacks for storing the elements and objects.
-    private Stack<String> elements = new Stack<String>();
-    private Stack<ContextTemperature> objects = new Stack<ContextTemperature>();
+    private Stack<String> elements = new Stack<>();
 
-    private ContextElement mContext;
+    private ContextElement context;
 
     public ContextSaxParser() throws ParserConfigurationException, SAXException {
         SAXParserFactory factory = SAXParserFactory.newInstance();
-        mParser = factory.newSAXParser();
+        parser = factory.newSAXParser();
     }
 
     @Override
     public ContextElement parseUrl(String inputUrl) throws SAXException, IOException {
-        mParser.parse(inputUrl, this);
-        return mContext;
+        parser.parse(inputUrl, this);
+        return context;
     }
 
     @Override
@@ -61,18 +58,18 @@ public class ContextSaxParser extends DefaultHandler implements IContextParser {
         elements.pop();
 
         if (qName.equals("contextElement")) {
-            mContext.setContextId(mContextId);
-            mContext.setContextKey(mContextKey);
-            mContext.setUnit(mUnit);
+            context.setContextId(contextId);
+            context.setContextKey(contextKey);
+            context.setUnit(unit);
 
-            if (mContextKey.equals(ContextKey.POSITION)) {
+            if (contextKey.equals(ContextKey.POSITION)) {
 
-                ((ContextPosition) mContext).setLatitude(mLatitude);
-                ((ContextPosition) mContext).setLongitude(mLongitude);
+                ((ContextPosition) context).setLatitude(latitude);
+                ((ContextPosition) context).setLongitude(longitude);
 
-            } else if (mContextKey.equals(ContextKey.TIME)) {
+            } else if (contextKey.equals(ContextKey.TIME)) {
 
-                Date date = new Date(Long.parseLong(mValue));
+                Date date = new Date(Long.parseLong(value));
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                 sdf.setTimeZone(TimeZone.getTimeZone("CET"));
                 String[] dateStr = sdf.format(date).split(":");
@@ -81,16 +78,16 @@ public class ContextSaxParser extends DefaultHandler implements IContextParser {
                 int minutes = Integer.parseInt(dateStr[1]);
                 int seconds = Integer.parseInt(dateStr[2]);
 
-                ((ContextTime) mContext).setHours(hours);
-                ((ContextTime) mContext).setMinutes(minutes);
-                ((ContextTime) mContext).setSeconds(seconds);
+                ((ContextTime) context).setHours(hours);
+                ((ContextTime) context).setMinutes(minutes);
+                ((ContextTime) context).setSeconds(seconds);
 
-            } else if (mContextKey.equals(ContextKey.TEMPERATURE)) {
+            } else if (contextKey.equals(ContextKey.TEMPERATURE)) {
 
-                ((ContextTemperature) mContext).setTemperature(Integer.parseInt(mValue));
+                ((ContextTemperature) context).setTemperature(Integer.parseInt(value));
 
-            } else if (mContextKey.equals(ContextKey.VELOCITY)) {
-                ((ContextVelocity) mContext).setVelocity(Double.parseDouble(mValue));
+            } else if (contextKey.equals(ContextKey.VELOCITY)) {
+                ((ContextVelocity) context).setVelocity(Double.parseDouble(value));
             }
         }
     }
@@ -98,9 +95,9 @@ public class ContextSaxParser extends DefaultHandler implements IContextParser {
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
 
-        String value = new String(ch, start, length);
+        String strVal = new String(ch, start, length);
 
-        if (value.length() == 0) {
+        if (strVal.length() == 0) {
             return;
         }
 
@@ -109,28 +106,28 @@ public class ContextSaxParser extends DefaultHandler implements IContextParser {
         switch (currentElement()) {
 
             case CONTEXT_ID:
-                mContextId = Integer.parseInt(content);
+                contextId = Integer.parseInt(content);
                 break;
 
             case CONTEXT_KEY:
-                mContextKey = ContextKey.valueOf(content.toUpperCase());
+                contextKey = ContextKey.valueOf(content.toUpperCase());
                 initContext();
                 break;
 
             case UNIT:
-                mUnit = content;
+                unit = content;
                 break;
 
             case VALUE:
-                mValue = content;
+                value = content;
                 break;
 
             case LATITUDE:
-                mLatitude = Double.parseDouble(content);
+                latitude = Double.parseDouble(content);
                 break;
 
             case LONGITUDE:
-                mLongitude = Double.parseDouble(content);
+                longitude = Double.parseDouble(content);
                 break;
 
             default:
@@ -144,14 +141,14 @@ public class ContextSaxParser extends DefaultHandler implements IContextParser {
 
     private void initContext() {
 
-        if (mContextKey.equals(ContextKey.TIME)) {
-            mContext = new ContextTime();
-        } else if (mContextKey.equals(ContextKey.POSITION)) {
-            mContext = new ContextPosition();
-        } else if (mContextKey.equals(ContextKey.TEMPERATURE)) {
-            mContext = new ContextTemperature();
-        } else if (mContextKey.equals(ContextKey.VELOCITY)) {
-            mContext = new ContextVelocity();
+        if (contextKey.equals(ContextKey.TIME)) {
+            context = new ContextTime();
+        } else if (contextKey.equals(ContextKey.POSITION)) {
+            context = new ContextPosition();
+        } else if (contextKey.equals(ContextKey.TEMPERATURE)) {
+            context = new ContextTemperature();
+        } else if (contextKey.equals(ContextKey.VELOCITY)) {
+            context = new ContextVelocity();
         }
     }
 }

@@ -23,7 +23,7 @@ public class AALComponent implements IComponent {
     private Pane view;
     private final String name = "AAL";
 
-    private IContextParser mParser;
+    private IContextParser parser;
 
     private static final String XML_DIR = "xml/";
 
@@ -60,10 +60,10 @@ public class AALComponent implements IComponent {
         try {
             switch (_mode) {
                 case SAX:
-                    mParser = new ContextSaxParser();
+                    parser = new ContextSaxParser();
                     break;
                 case DOM:
-                    mParser = new ContextDomParser();
+                    parser = new ContextDomParser();
                     break;
             }
         } catch (SAXException | ParserConfigurationException e) {
@@ -73,7 +73,7 @@ public class AALComponent implements IComponent {
 
     public void getTemperatureContext() {
         try {
-            ContextElement result = mParser.parseUrl(XML_DIR + "contextTemperature.xml");
+            ContextElement result = parser.parseUrl(XML_DIR + "contextTemperature.xml");
             mediator.notify(this, MessageType.FROM_AAL, result);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class AALComponent implements IComponent {
 
     public void getPositionContext() {
         try {
-            ContextElement result = mParser.parseUrl(XML_DIR + "contextPosition.xml");
+            ContextElement result = parser.parseUrl(XML_DIR + "contextPosition.xml");
             mediator.notify(this, MessageType.FROM_AAL, result);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class AALComponent implements IComponent {
 
     public void getTimeContext() {
         try {
-            ContextElement result = mParser.parseUrl(XML_DIR + "contextTime.xml");
+            ContextElement result = parser.parseUrl(XML_DIR + "contextTime.xml");
             mediator.notify(this, MessageType.FROM_AAL, result);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -101,7 +101,7 @@ public class AALComponent implements IComponent {
 
     public void getVelocityContext() {
         try {
-            ContextElement result = mParser.parseUrl(XML_DIR + "contextVelocity.xml");
+            ContextElement result = parser.parseUrl(XML_DIR + "contextVelocity.xml");
             mediator.notify(this, MessageType.FROM_AAL, result);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();

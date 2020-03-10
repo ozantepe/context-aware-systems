@@ -4,7 +4,7 @@
         xmlns="http://www.fh-hagenberg.at/cas"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <contextId>24</contextId>
-    <contextKey>time</contextKey>
+    <contextKey>Time</contextKey>
     <contextValue>
         <unit>seconds</unit>
         <value>1542357918817</value>

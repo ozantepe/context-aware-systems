@@ -2,36 +2,26 @@ package com.dto;
 
 public class ContextVelocity extends ContextElement {
 
-    private double mVelocity;
+    private double velocity;
 
     public ContextVelocity() {
     }
 
     public ContextVelocity(int contextId, ContextKey contextKey, String unit, double velocity) {
         super(contextId, contextKey, unit);
-        mVelocity = velocity;
+        this.velocity = velocity;
     }
 
     public double getVelocity() {
-        return mVelocity;
+        return velocity;
     }
 
     public void setVelocity(double velocity) {
-        mVelocity = velocity;
+        this.velocity = velocity;
     }
 
     @Override
     public int getValueAsInt() {
-        return (int) mVelocity;
-    }
-
-    @Override
-    public String toString() {
-        return "ContextVelocity{" +
-                "mVelocity=" + mVelocity +
-                ", mContextKey=" + mContextKey +
-                ", mContextId=" + mContextId +
-                ", mUnit='" + mUnit + '\'' +
-                '}';
+        return (int) velocity;
     }
 }

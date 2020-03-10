@@ -2,47 +2,36 @@ package com.dto;
 
 public class ContextPosition extends ContextElement {
 
-    private double mLatitude;
-    private double mLongitude;
+    private double latitude;
+    private double longitude;
 
     public ContextPosition() {
     }
 
     public ContextPosition(int contextId, ContextKey contextKey, String unit, double latitude, double longitude) {
         super(contextId, contextKey, unit);
-        mLatitude = latitude;
-        mLongitude = longitude;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public double getLatitude() {
-        return mLatitude;
+        return latitude;
     }
 
     public void setLatitude(double latitude) {
-        mLatitude = latitude;
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
-        return mLongitude;
+        return longitude;
     }
 
     public void setLongitude(double longitude) {
-        mLongitude = longitude;
+        this.longitude = longitude;
     }
 
     @Override
     public int getValueAsInt() {
         throw new RuntimeException("getValueAsInt is not implemented!");
-    }
-
-    @Override
-    public String toString() {
-        return "ContextPosition{" +
-                "mLatitude=" + mLatitude +
-                ", mLongitude=" + mLongitude +
-                ", mContextKey=" + mContextKey +
-                ", mContextId=" + mContextId +
-                ", mUnit='" + mUnit + '\'' +
-                '}';
     }
 }

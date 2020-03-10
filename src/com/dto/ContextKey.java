@@ -2,24 +2,16 @@ package com.dto;
 
 public enum ContextKey {
 
-    POSITION("position"), //
-    TEMPERATURE("temperature"), //
-    TIME("time"), //
-    VELOCITY("velocity"), //
-    FREQUENCY("frequency"), //
-    RAINPROBABILITY("rainprobability"), //
-    WINDVELOCITY("windvelocity"), //
-    FUELLEVEL("fuellevel");
+    POSITION("Position"),
+    TEMPERATURE("Temperature"),
+    TIME("Time"),
+    VELOCITY("Velocity"),
+    FREQUENCY("Frequency"),
+    FUEL_LEVEL("FuelLevel");
 
-    private String mText;
+    private String text;
 
     ContextKey(String text) {
-        mText = text;
+        this.text = text;
     }
-
-    @Override
-    public String toString() {
-        return mText;
-    }
-
 }

@@ -4,9 +4,9 @@
         xmlns="http://www.fh-hagenberg.at/cas"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <contextId>23</contextId>
-    <contextKey>position</contextKey>
+    <contextKey>Position</contextKey>
     <contextValue>
-        <unit>degreeminutes</unit>
+        <unit>degree minutes</unit>
         <data>
             <latitude>6168389</latitude>
             <longitude>1615775</longitude>

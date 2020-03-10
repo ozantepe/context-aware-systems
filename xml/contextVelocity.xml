@@ -4,7 +4,7 @@
         xmlns="http://www.fh-hagenberg.at/cas"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <contextId>25</contextId>
-    <contextKey>velocity</contextKey>
+    <contextKey>Velocity</contextKey>
     <contextValue>
         <unit>kilometers per hour</unit>
         <value>80</value>
