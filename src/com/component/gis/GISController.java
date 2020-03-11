@@ -1,7 +1,7 @@
 package com.component.gis;
 
 import com.database.server.IGeoServer;
-import com.dto.PositionPOI;
+import com.dto.*;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Rectangle2D;
@@ -57,21 +57,6 @@ public class GISController {
 
     void drag(int x, int y) {
         gisModel.drag(x, y);
-        gisModel.repaint();
-    }
-
-    void updatePOI(Object data) {
-        gisModel.setDataToShow(new ArrayList<>(gisModel.getOriginalData()));
-        Set<Integer> typeIds = (Set<Integer>) data;
-        if (!typeIds.isEmpty()) {
-            gisModel.getDataToShow().removeIf(geoObject -> !typeIds.contains(geoObject.getType()));
-        }
-        gisModel.repaint();
-    }
-
-    void updateGPS(Object data) {
-        PositionPOI positionPOI = (PositionPOI) data;
-        gisModel.getDataToShow().add(positionPOI);
         gisModel.repaint();
     }
 
@@ -142,6 +127,33 @@ public class GISController {
             scale = ZOOM_SCALE;
         }
         gisModel.zoom(new Point((int) event.getX(), (int) event.getY()), scale);
+        gisModel.repaint();
+    }
+
+    void updatePOI(Object data) {
+        gisModel.setDataToShow(new ArrayList<>(gisModel.getOriginalData()));
+        Set<Integer> typeIds = (Set<Integer>) data;
+        if (!typeIds.isEmpty()) {
+            gisModel.getDataToShow().removeIf(geoObject -> !typeIds.contains(geoObject.getType()));
+        }
+        gisModel.repaint();
+    }
+
+    void updateGPS(Object data) {
+        PositionPOI positionPOI = (PositionPOI) data;
+        gisModel.getDataToShow().add(positionPOI);
+        gisModel.repaint();
+    }
+
+    void updateCM(Object data) {
+        ContextSituation contextSituation = (ContextSituation) data;
+        ContextElement tmpElem = contextSituation.getContextElements().get(ContextKey.POSITION);
+        if (tmpElem instanceof ContextPosition) {
+            ContextPosition position = (ContextPosition) tmpElem;
+            PositionPOI userPosition = new PositionPOI("userPosition", 10027, position.getLongitude(), position.getLatitude());
+            gisModel.setUserPosition(userPosition);
+        }
+        // TODO: evaluate rules according to other context elements
         gisModel.repaint();
     }
 }

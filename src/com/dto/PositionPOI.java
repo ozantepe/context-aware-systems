@@ -9,8 +9,23 @@ import static com.database.feature.GeoObjectPartType.UNDEFINED;
 
 public class PositionPOI extends GeoObject {
 
-    public PositionPOI(String id, int type, int x, int y) {
+    private static final int PROJECTION_FACTOR = 1000000;
+
+    private double longitude;
+    private double latitude;
+
+    public PositionPOI(String id, int type, double x, double y) {
         super(id, type);
-        this.addPart(new GeoObjectPart_Point(new Point(x, y), UNDEFINED));
+        this.addPart(new GeoObjectPart_Point(new Point((int) (x * PROJECTION_FACTOR), (int) (y * PROJECTION_FACTOR)), UNDEFINED));
+        this.longitude = x;
+        this.latitude = y;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
     }
 }

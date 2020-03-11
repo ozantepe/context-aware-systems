@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Set;
 
 public class GISModel {
 
@@ -23,6 +22,8 @@ public class GISModel {
     private BufferedImage canvas;
     private Matrix matrix;
 
+    private GeoObject userPosition;
+
     public List<GeoObject> getOriginalData() {
         return originalData;
     }
@@ -33,6 +34,10 @@ public class GISModel {
 
     public void setDataToShow(List<GeoObject> dataToShow) {
         this.dataToShow = dataToShow;
+    }
+
+    public void setUserPosition(GeoObject userPosition) {
+        this.userPosition = userPosition;
     }
 
     void setWidth(double width) {
@@ -85,6 +90,12 @@ public class GISModel {
                 DrawingContext.drawObject(geoObject, g, matrix);
             }
         }
+
+        // Draw current user position
+        if (userPosition != null && matrix != null) {
+            DrawingContext.drawObject(userPosition, g, matrix);
+        }
+
         update(canvas);
     }
 

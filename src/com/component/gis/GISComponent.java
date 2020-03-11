@@ -51,6 +51,10 @@ public class GISComponent implements IComponent, IObserver {
                 controller.updateGPS(data);
                 break;
             }
+            case FROM_CM: {
+                controller.updateCM(data);
+                break;
+            }
             default:
                 break;
         }

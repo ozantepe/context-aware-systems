@@ -2,6 +2,7 @@ package com.mediator;
 
 import com.component.IComponent;
 import com.component.aal.AALComponent;
+import com.component.cm.ContextManagementComponent;
 import com.component.gis.GISComponent;
 import com.component.gps.GPSComponent;
 import com.component.poi.POIComponent;
@@ -37,6 +38,7 @@ public class Mediator extends Application implements IMediator {
 
         stage.setTitle("CAS Project");
         stage.setScene(new Scene(tabPane, 640, 480));
+        stage.setOnCloseRequest(event -> System.exit(0));
         stage.show();
     }
 
@@ -59,6 +61,10 @@ public class Mediator extends Application implements IMediator {
         // Binding AAL component
         AALComponent aalComponent = new AALComponent(this);
         this.registerComponent(aalComponent);
+
+        // Binding ContextManagement component
+        ContextManagementComponent contextManagementComponent = new ContextManagementComponent(this);
+        this.registerComponent(contextManagementComponent);
     }
 
     public static void main(String[] args) {
@@ -73,8 +79,14 @@ public class Mediator extends Application implements IMediator {
         } else if (messageType.equals(MessageType.FROM_GPS)) {
             // update gis
             updateGIS(messageType, data);
+            updateCM(messageType, data);
         } else if (messageType.equals(MessageType.FROM_AAL)) {
-
+            // update gis and cm components
+            updateGIS(messageType, data);
+            updateCM(messageType, data);
+        } else if (messageType.equals(MessageType.FROM_CM)) {
+            // update gis component
+            updateGIS(messageType, data);
         } else {
             System.out.print("Unhandled message: ");
         }
@@ -84,6 +96,11 @@ public class Mediator extends Application implements IMediator {
     private void updateGIS(MessageType messageType, Object data) {
         GISComponent gisComponent = (GISComponent) components.stream().filter(component -> component instanceof GISComponent).findFirst().get();
         gisComponent.update(messageType, data);
+    }
+
+    private void updateCM(MessageType messageType, Object data) {
+        ContextManagementComponent cmComponent = (ContextManagementComponent) components.stream().filter(component -> component instanceof ContextManagementComponent).findFirst().get();
+        cmComponent.update(messageType, data);
     }
 
     @Override

@@ -91,7 +91,7 @@ public class GPSComponent implements IComponent, INMEAUpdate {
     @Override
     public void update(NMEAInfo nmeaInfo) {
         if (nmeaInfo != null) {
-            PositionPOI positionPOI = new PositionPOI("userLocation", 9999, (int) (nmeaInfo.getLongitude() * 1000000), (int) (nmeaInfo.getLatitude() * 1000000));
+            PositionPOI positionPOI = new PositionPOI("userPosition", 10027, nmeaInfo.getLongitude(), nmeaInfo.getLatitude());
             mediator.notify(this, MessageType.FROM_GPS, positionPOI);
         }
     }

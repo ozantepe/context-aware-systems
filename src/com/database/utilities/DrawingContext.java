@@ -193,6 +193,13 @@ public class DrawingContext {
                     _obj.paint(_g, _matrix, f, b);
                 }
                 break;
+                case 10027: {
+                    _g.setColor(Color.RED);
+                    Rectangle normalizedRect = _matrix.multiply(_obj.getBounds());
+                    _g.drawString("USER", normalizedRect.x, normalizedRect.y);
+                    _obj.paint(_g, _matrix, Color.RED, Color.RED);
+                }
+                break;
                 default: {
                     _obj.paint(_g, _matrix, null, Color.black);
                 }
