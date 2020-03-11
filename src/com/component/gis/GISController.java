@@ -1,7 +1,9 @@
 package com.component.gis;
 
 import com.database.server.IGeoServer;
-import com.dto.*;
+import com.dto.ContextPosition;
+import com.dto.ContextSituation;
+import com.dto.PositionPOI;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Rectangle2D;
@@ -147,12 +149,30 @@ public class GISController {
 
     void updateCM(Object data) {
         ContextSituation contextSituation = (ContextSituation) data;
-        ContextElement tmpElem = contextSituation.getContextElements().get(ContextKey.POSITION);
-        if (tmpElem instanceof ContextPosition) {
-            ContextPosition position = (ContextPosition) tmpElem;
-            PositionPOI userPosition = new PositionPOI("userPosition", 10027, position.getLongitude(), position.getLatitude());
-            gisModel.setUserPosition(userPosition);
-        }
+
+        contextSituation.getContextElements().forEach((contextKey, contextElement) -> {
+            switch (contextKey) {
+                case POSITION:
+                    if (contextElement instanceof ContextPosition) {
+                        ContextPosition contextPosition = (ContextPosition) contextElement;
+                        PositionPOI userPosition = new PositionPOI("userPosition", 10027, contextPosition.getLongitude(), contextPosition.getLatitude());
+                        gisModel.setUserPosition(userPosition);
+                    }
+                    break;
+                case TEMPERATURE:
+                    System.out.println("Temperature: " + contextElement.getValueAsInt());
+                    break;
+                case TIME:
+                    System.out.println("Time: " + contextElement.getValueAsInt());
+                    break;
+                case VELOCITY:
+                    System.out.println("Velocity: " + contextElement.getValueAsInt());
+                    break;
+                default:
+                    break;
+            }
+        });
+
         // TODO: evaluate rules according to other context elements
         gisModel.repaint();
     }

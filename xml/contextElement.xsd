@@ -1,8 +1,4 @@
-<xs:schema
-        attributeFormDefault="unqualified"
-        elementFormDefault="qualified"
-        targetNamespace="http://www.fh-hagenberg.at/cas"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="contextElement">
         <xs:complexType>
             <xs:sequence>

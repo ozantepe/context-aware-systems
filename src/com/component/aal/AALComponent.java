@@ -87,7 +87,6 @@ public class AALComponent implements IComponent {
         } catch (SAXException | IOException | ParserConfigurationException e) {
             e.printStackTrace();
         }
-
     }
 
     public void getTimeContext() {

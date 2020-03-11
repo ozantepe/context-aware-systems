@@ -1,5 +1,9 @@
 package com.dto;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class ContextTime extends ContextElement {
 
     private int hours;
@@ -46,6 +50,19 @@ public class ContextTime extends ContextElement {
 
     @Override
     public int getValueAsInt() {
-        throw new RuntimeException("getValueAsInt is not implemented!");
+        return hours * 3600 + minutes * 60 + seconds;
+    }
+
+    public void initCurrentTime() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("CET"));
+        String[] dateStr = sdf.format(date).split(":");
+        int hours = Integer.parseInt(dateStr[0]);
+        int minutes = Integer.parseInt(dateStr[1]);
+        int seconds = Integer.parseInt(dateStr[2]);
+        setHours(hours);
+        setMinutes(minutes);
+        setSeconds(seconds);
     }
 }

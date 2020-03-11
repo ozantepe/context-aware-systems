@@ -51,7 +51,7 @@ public class ContextDomParser implements IContextParser {
                 for (int i = 0; i < contextValue.getLength(); i++) {
                     if (contextValue.item(i).getNodeName().equals("unit")) {
                         contextTime.setUnit(contextValue.item(i).getTextContent());
-                    } else if (contextValue.item(i).getNodeName().equals("parameterValue")) {
+                    } else if (contextValue.item(i).getNodeName().equals("value")) {
                         Date date = new Date(Long.parseLong(contextValue.item(i).getTextContent()));
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                         sdf.setTimeZone(TimeZone.getTimeZone("CET"));
@@ -99,7 +99,7 @@ public class ContextDomParser implements IContextParser {
                 for (int i = 0; i < contextValue.getLength(); i++) {
                     if (contextValue.item(i).getNodeName().equals("unit")) {
                         contextTemperature.setUnit(contextValue.item(i).getTextContent());
-                    } else if (contextValue.item(i).getNodeName().equals("parameterValue")) {
+                    } else if (contextValue.item(i).getNodeName().equals("value")) {
                         contextTemperature.setTemperature(Integer.parseInt(contextValue.item(i).getTextContent()));
                     }
                 }
@@ -113,7 +113,7 @@ public class ContextDomParser implements IContextParser {
                 for (int i = 0; i < contextValue.getLength(); i++) {
                     if (contextValue.item(i).getNodeName().equals("unit")) {
                         contextVelocity.setUnit(contextValue.item(i).getTextContent());
-                    } else if (contextValue.item(i).getNodeName().equals("parameterValue")) {
+                    } else if (contextValue.item(i).getNodeName().equals("value")) {
                         contextVelocity.setVelocity(Integer.parseInt(contextValue.item(i).getTextContent()));
                     }
                 }
