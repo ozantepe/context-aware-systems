@@ -8,7 +8,8 @@ public class ContextPosition extends ContextElement {
     public ContextPosition() {
     }
 
-    public ContextPosition(int contextId, ContextKey contextKey, String unit, double latitude, double longitude) {
+    public ContextPosition(
+            int contextId, ContextKey contextKey, String unit, double latitude, double longitude) {
         super(contextId, contextKey, unit);
         this.latitude = latitude;
         this.longitude = longitude;

@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 
 public interface IComponent {
 
-    Pane getView();
+  Pane getView();
 
-    String getName();
+  String getName();
 }

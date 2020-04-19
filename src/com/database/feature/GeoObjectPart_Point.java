@@ -28,10 +28,6 @@ public class GeoObjectPart_Point extends AGeoObjectPart {
     protected void paintBorder(Graphics _g, Matrix _m, Color _c) {
         Point p = _m.multiply(mPoint);
         _g.setColor(_c);
-        _g.drawOval(
-                p.x - (DELTA >> 1),
-                p.y - (DELTA >> 1),
-                DELTA,
-                DELTA);
+        _g.drawOval(p.x - (DELTA >> 1), p.y - (DELTA >> 1), DELTA, DELTA);
     }
 }

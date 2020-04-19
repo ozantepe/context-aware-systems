@@ -13,7 +13,8 @@ public class ContextTime extends ContextElement {
     public ContextTime() {
     }
 
-    public ContextTime(int contextId, ContextKey contextKey, String unit, int hours, int minutes, int seconds) {
+    public ContextTime(
+            int contextId, ContextKey contextKey, String unit, int hours, int minutes, int seconds) {
         super(contextId, contextKey, unit);
         this.hours = hours;
         this.minutes = minutes;

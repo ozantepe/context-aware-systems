@@ -28,10 +28,7 @@ public class GeoObjectPart_Area extends AGeoObjectPart {
                 return mArea;
             } else {
                 // found holes ...
-                Polygon poly = new Polygon(
-                        mArea.xpoints.clone(),
-                        mArea.ypoints.clone(),
-                        mArea.npoints);
+                Polygon poly = new Polygon(mArea.xpoints.clone(), mArea.ypoints.clone(), mArea.npoints);
                 for (AGeoObjectPart holePart : mHoles) {
                     if (holePart instanceof GeoObjectPart_Area) {
                         GeoObjectPart_Area part = (GeoObjectPart_Area) holePart;
@@ -94,5 +91,4 @@ public class GeoObjectPart_Area extends AGeoObjectPart {
             part.paintBorder(_g, _m, _c);
         }
     }
-
 }

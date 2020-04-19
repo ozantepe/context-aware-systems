@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * The class is a first very "rudimentary" representation
- * of a geo object
+ * The class is a first very "rudimentary" representation of a geo object
  */
 public class GeoObject {
 
@@ -70,13 +69,13 @@ public class GeoObject {
         return mType;
     }
 
-//  /**
-//   * Returns the geometry of the object (in this case only area type objects are supported
-//   *
-//   * @return the geometry of the object
-//   * @see java.awt.Polygon
-//   */
-//  public Polygon getGeometry() { return mParts; }
+    //  /**
+    //   * Returns the geometry of the object (in this case only area type objects are supported
+    //   *
+    //   * @return the geometry of the object
+    //   * @see java.awt.Polygon
+    //   */
+    //  public Polygon getGeometry() { return mParts; }
 
     /**
      * Returns the minimum bounding box of the object
@@ -107,14 +106,12 @@ public class GeoObject {
         return mBounds.contains(_pt);
     }
 
-
     /**
      * The object can use the given drawing context to paint (resp. represent) itself
      *
      * @param _g      a drawing context used to paint the object
-     * @param _matrix the current transformation matrix used to transfer the world coordinate
-     *                system based points of the object into the window coordinate based coordinate
-     *                space
+     * @param _matrix the current transformation matrix used to transfer the world coordinate system
+     *                based points of the object into the window coordinate based coordinate space
      * @see Graphics
      */
     public void paint(Graphics _g, Matrix _matrix, Color _fill, Color _border) {

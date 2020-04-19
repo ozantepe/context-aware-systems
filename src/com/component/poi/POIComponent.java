@@ -37,34 +37,36 @@ public class POIComponent implements IComponent {
 
         CheckBox checkBox = new CheckBox("Police");
         vBox.getChildren().add(checkBox);
-        checkBox.setOnAction(event -> {
-            if (((CheckBox) event.getSource()).isSelected()) {
-                poiTypes.add(PoiType.POLICE);
-            } else {
-                poiTypes.remove(PoiType.POLICE);
-            }
-        });
+        checkBox.setOnAction(
+                event -> {
+                    if (((CheckBox) event.getSource()).isSelected()) {
+                        poiTypes.add(PoiType.POLICE);
+                    } else {
+                        poiTypes.remove(PoiType.POLICE);
+                    }
+                });
 
         checkBox = new CheckBox("Bank");
         vBox.getChildren().add(checkBox);
-        checkBox.setOnAction(event -> {
-            if (((CheckBox) event.getSource()).isSelected()) {
-                poiTypes.add(PoiType.BANK);
-            } else {
-                poiTypes.remove(PoiType.BANK);
-            }
-        });
-
+        checkBox.setOnAction(
+                event -> {
+                    if (((CheckBox) event.getSource()).isSelected()) {
+                        poiTypes.add(PoiType.BANK);
+                    } else {
+                        poiTypes.remove(PoiType.BANK);
+                    }
+                });
 
         checkBox = new CheckBox("Parking");
         vBox.getChildren().add(checkBox);
-        checkBox.setOnAction(event -> {
-            if (((CheckBox) event.getSource()).isSelected()) {
-                poiTypes.add(PoiType.PARKING);
-            } else {
-                poiTypes.remove(PoiType.PARKING);
-            }
-        });
+        checkBox.setOnAction(
+                event -> {
+                    if (((CheckBox) event.getSource()).isSelected()) {
+                        poiTypes.add(PoiType.PARKING);
+                    } else {
+                        poiTypes.remove(PoiType.PARKING);
+                    }
+                });
 
         Button sendButton = new Button("Send");
         sendButton.setOnAction(event -> sendPoiTypes());

@@ -7,7 +7,6 @@ public abstract class ContextElement {
     protected String unit;
 
     public ContextElement() {
-
     }
 
     public ContextElement(int contextId, ContextKey contextKey, String unit) {

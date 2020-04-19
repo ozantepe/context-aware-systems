@@ -4,5 +4,5 @@ import com.dto.MessageType;
 
 public interface IObserver {
 
-    void update(MessageType messageType, Object data);
+  void update(MessageType messageType, Object data);
 }

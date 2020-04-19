@@ -1,7 +1,6 @@
 package com.dto;
 
 public enum ContextKey {
-
     POSITION("Position"),
     TEMPERATURE("Temperature"),
     TIME("Time"),

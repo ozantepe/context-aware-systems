@@ -7,5 +7,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 public interface IContextParser {
-    ContextElement parseUrl(String inputUrl) throws SAXException, IOException, ParserConfigurationException;
+  ContextElement parseUrl(String inputUrl)
+          throws SAXException, IOException, ParserConfigurationException;
 }

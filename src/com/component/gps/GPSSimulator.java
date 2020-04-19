@@ -6,11 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Class that simulates a typical GPS receiver. It provides
- * NMEA-0183 statements through its readline() method. After
- * each block (defined by a filter stmt) the readline() method
- * actively blocks for a specified sleep time. The data is
- * provided based on a given file.
+ * Class that simulates a typical GPS receiver. It provides NMEA-0183 statements through its
+ * readline() method. After each block (defined by a filter stmt) the readline() method actively
+ * blocks for a specified sleep time. The data is provided based on a given file.
  *
  * @author jkroesche
  */
@@ -22,15 +20,13 @@ public class GPSSimulator extends BufferedReader {
 	private int mSleep;
 
 	/**
-	 * Constructor for the GPS simulator. It opens a file and provides
-	 * its input line wise through the use of the readline() method.
-	 * After each data block (identified through a filter stmt) the
+	 * Constructor for the GPS simulator. It opens a file and provides its input line wise through the
+	 * use of the readline() method. After each data block (identified through a filter stmt) the
 	 * system actively blocks
 	 *
 	 * @param _file   The file to be used as input
 	 * @param _filter The filter stmt used to identify a new block
-	 * @param _sleep  The amount of milliseconds the method blocks
-	 *                until a new data block is returned
+	 * @param _sleep  The amount of milliseconds the method blocks until a new data block is returned
 	 * @throws FileNotFoundException
 	 */
 	public GPSSimulator(String _file, String _filter, int _sleep) throws FileNotFoundException {

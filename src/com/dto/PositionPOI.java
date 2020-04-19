@@ -16,7 +16,9 @@ public class PositionPOI extends GeoObject {
 
     public PositionPOI(String id, int type, double x, double y) {
         super(id, type);
-        this.addPart(new GeoObjectPart_Point(new Point((int) (x * PROJECTION_FACTOR), (int) (y * PROJECTION_FACTOR)), UNDEFINED));
+        this.addPart(
+                new GeoObjectPart_Point(
+                        new Point((int) (x * PROJECTION_FACTOR), (int) (y * PROJECTION_FACTOR)), UNDEFINED));
         this.longitude = x;
         this.latitude = y;
     }

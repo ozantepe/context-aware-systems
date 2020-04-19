@@ -1,7 +1,6 @@
 package com.dto;
 
 public enum PoiType {
-
     POLICE(10003),
     BANK(10007),
     PARKING(10011);
