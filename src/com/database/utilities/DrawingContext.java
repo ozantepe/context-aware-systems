@@ -2,7 +2,11 @@ package com.database.utilities;
 
 import com.database.feature.GeoObject;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class DrawingContext {
 
@@ -164,15 +168,12 @@ public class DrawingContext {
                 case 9099:
                 case 10001: // amenity:
                 case 10002:
-                case 10003:
                 case 10004:
                 case 10005:
                 case 10006:
-                case 10007:
                 case 10008:
                 case 10009:
                 case 10010:
-                case 10011:
                 case 10012:
                 case 10013:
                 case 10014:
@@ -200,10 +201,44 @@ public class DrawingContext {
                     _obj.paint(_g, _matrix, Color.RED, Color.RED);
                 }
                 break;
+                case 10003: {
+                    handleDrawingPOI(_obj, _g, _matrix, "icons/police.png", "POLICE");
+                }
+                break;
+                case 10007: {
+                    handleDrawingPOI(_obj, _g, _matrix, "icons/bank.png", "BANK");
+                }
+                break;
+                case 10011: {
+                    handleDrawingPOI(_obj, _g, _matrix, "icons/parking.png", "PARKING");
+                }
+                break;
                 default: {
                     _obj.paint(_g, _matrix, null, Color.black);
                 }
             } // switch
         } // if parameter null
+    }
+
+    private static void handleDrawingPOI(GeoObject _obj, Graphics _g, Matrix _matrix, String imageFilePath,
+                                         String title) {
+        if (_obj.isActivePOI()) {
+            drawImage(_g, imageFilePath, _matrix.multiply(_obj.getBounds()), title);
+        } else {
+            _obj.paint(_g, _matrix, null, Color.black);
+        }
+    }
+
+    private static void drawImage(Graphics _g, String filePath, Rectangle normalizedBounds, String title) {
+        BufferedImage policeImage;
+        try {
+            policeImage = ImageIO.read(new File(filePath));
+            _g.setColor(Color.BLUE);
+            _g.drawString(title, normalizedBounds.x, normalizedBounds.y);
+            _g.drawImage(policeImage, normalizedBounds.x - policeImage.getWidth(null) / 2,
+                    normalizedBounds.y - policeImage.getHeight(null) / 2, 50, 50, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

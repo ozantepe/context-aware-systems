@@ -17,23 +17,14 @@ public class GISModel {
 
     private IDataObserver observer;
     private IGeoServer geoServer;
-    private List<GeoObject> originalData;
-    private List<GeoObject> dataToShow;
+    private List<GeoObject> geoObjects;
     private BufferedImage canvas;
     private Matrix matrix;
 
     private GeoObject userPosition;
 
-    public List<GeoObject> getOriginalData() {
-        return originalData;
-    }
-
-    public List<GeoObject> getDataToShow() {
-        return dataToShow;
-    }
-
-    public void setDataToShow(List<GeoObject> dataToShow) {
-        this.dataToShow = dataToShow;
+    public List<GeoObject> getGeoObjects() {
+        return geoObjects;
     }
 
     public void setUserPosition(GeoObject userPosition) {
@@ -62,8 +53,7 @@ public class GISModel {
         boolean isConnectionSuccessful = this.geoServer.connect(this.geoServer.getConn(), this.geoServer.getUser(), this.geoServer.getPass());
         if (isConnectionSuccessful) {
             System.out.println("Connection to database is successful...");
-            originalData = this.geoServer.loadData();
-            dataToShow = originalData;
+            geoObjects = this.geoServer.loadData();
         } else {
             System.out.println("Connection to database is failed...");
         }
@@ -85,7 +75,7 @@ public class GISModel {
 
         // Draw map
         g.setColor(Color.BLACK);
-        for (GeoObject geoObject : dataToShow) {
+        for (GeoObject geoObject : geoObjects) {
             if (matrix != null) {
                 DrawingContext.drawObject(geoObject, g, matrix);
             }
@@ -104,7 +94,7 @@ public class GISModel {
     }
 
     void zoomToFit() {
-        Rectangle map = getMapBounds(dataToShow);
+        Rectangle map = getMapBounds(geoObjects);
         Rectangle window = new Rectangle(0, 0, width, height);
         matrix = Matrix.zoomToFit(map, window);
     }

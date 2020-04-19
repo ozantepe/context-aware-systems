@@ -26,7 +26,6 @@ public class POIComponent implements IComponent {
 
     public POIComponent(IMediator mediator) {
         this.mediator = mediator;
-        // TODO: poi objects can be read from poi.osm file using a sax reader
         initView();
     }
 

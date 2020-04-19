@@ -1,5 +1,6 @@
 package com.component.gis;
 
+import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
 import com.dto.ContextPosition;
 import com.dto.ContextSituation;
@@ -13,12 +14,11 @@ import javafx.scene.input.ScrollEvent;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Set;
 
 public class GISController {
 
-    private GISModel gisModel;
+    private final GISModel gisModel;
 
     private Point2D.Double zoomStartPoint;
     private Point2D.Double dragStartPoint;
@@ -133,17 +133,19 @@ public class GISController {
     }
 
     void updatePOI(Object data) {
-        gisModel.setDataToShow(new ArrayList<>(gisModel.getOriginalData()));
         Set<Integer> typeIds = (Set<Integer>) data;
+        gisModel.getGeoObjects().stream().filter(GeoObject::isActivePOI).forEach(
+                poiObject -> poiObject.setActivePOI(false));
         if (!typeIds.isEmpty()) {
-            gisModel.getDataToShow().removeIf(geoObject -> !typeIds.contains(geoObject.getType()));
+            gisModel.getGeoObjects().stream().filter(geoObject -> typeIds.contains(geoObject.getType())).forEach(
+                    poiObject -> poiObject.setActivePOI(true));
         }
         gisModel.repaint();
     }
 
     void updateGPS(Object data) {
         PositionPOI positionPOI = (PositionPOI) data;
-        gisModel.getDataToShow().add(positionPOI);
+        gisModel.getGeoObjects().add(positionPOI);
         gisModel.repaint();
     }
 

@@ -23,6 +23,16 @@ public class GeoObject {
     /// list of polygons (not supporting holes) to support drawing holes
     private List<Polygon> mFillGeometry;
 
+    private boolean isActivePOI = false;
+
+    public boolean isActivePOI() {
+        return isActivePOI;
+    }
+
+    public void setActivePOI(boolean activePOI) {
+        isActivePOI = activePOI;
+    }
+
     /**
      * Constructor
      *
