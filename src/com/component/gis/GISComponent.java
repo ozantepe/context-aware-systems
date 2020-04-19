@@ -5,7 +5,6 @@ import com.component.IObserver;
 import com.database.server.IGeoServer;
 import com.dto.MessageType;
 import com.mediator.IMediator;
-import com.mediator.Mediator;
 import javafx.scene.layout.Pane;
 
 public class GISComponent implements IComponent, IObserver {
@@ -18,7 +17,7 @@ public class GISComponent implements IComponent, IObserver {
     private GISController controller;
     private GISView view;
 
-    public GISComponent(Mediator mediator, IGeoServer geoServer) {
+    public GISComponent(IMediator mediator, IGeoServer geoServer) {
         this.mediator = mediator;
         initComponent(geoServer);
     }

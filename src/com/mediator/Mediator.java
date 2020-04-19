@@ -1,11 +1,9 @@
 package com.mediator;
 
+import com.component.ComponentFactory;
 import com.component.IComponent;
-import com.component.aal.AALComponent;
 import com.component.cm.ContextManagementComponent;
 import com.component.gis.GISComponent;
-import com.component.gps.GPSComponent;
-import com.component.poi.POIComponent;
 import com.database.server.IGeoServer;
 import com.database.server.OSMGeoServer;
 import com.dto.MessageType;
@@ -15,13 +13,13 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Mediator extends Application implements IMediator {
 
+    private static String COMPONENT_COMPOSITION_FILE_NAME;
+
     private List<IComponent> components;
-    private IGeoServer geoServer;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -43,31 +41,16 @@ public class Mediator extends Application implements IMediator {
     }
 
     private void initComponents() {
-        components = new ArrayList<>();
-        geoServer = new OSMGeoServer();
-
-        // Binding GIS component
-        GISComponent gisComponent = new GISComponent(this, geoServer);
-        this.registerComponent(gisComponent);
-
-        // Binding GPS component
-        GPSComponent gpsComponent = new GPSComponent(this);
-        this.registerComponent(gpsComponent);
-
-        // Binding POI component
-        POIComponent poiComponent = new POIComponent(this);
-        this.registerComponent(poiComponent);
-
-        // Binding AAL component
-        AALComponent aalComponent = new AALComponent(this);
-        this.registerComponent(aalComponent);
-
-        // Binding ContextManagement component
-        ContextManagementComponent contextManagementComponent = new ContextManagementComponent(this);
-        this.registerComponent(contextManagementComponent);
+        IGeoServer geoServer = new OSMGeoServer();
+        components = ComponentFactory.buildComponents(COMPONENT_COMPOSITION_FILE_NAME, this, geoServer);
     }
 
     public static void main(String[] args) {
+        if (args.length >= 1) {
+            COMPONENT_COMPOSITION_FILE_NAME = args[0];
+        } else {
+            COMPONENT_COMPOSITION_FILE_NAME = "xml/ComponentComposition.xml";
+        }
         launch(args);
     }
 
@@ -94,17 +77,16 @@ public class Mediator extends Application implements IMediator {
     }
 
     private void updateGIS(MessageType messageType, Object data) {
-        GISComponent gisComponent = (GISComponent) components.stream().filter(component -> component instanceof GISComponent).findFirst().get();
+        GISComponent gisComponent =
+                (GISComponent) components.stream().filter(
+                        component -> component instanceof GISComponent).findFirst().get();
         gisComponent.update(messageType, data);
     }
 
     private void updateCM(MessageType messageType, Object data) {
-        ContextManagementComponent cmComponent = (ContextManagementComponent) components.stream().filter(component -> component instanceof ContextManagementComponent).findFirst().get();
+        ContextManagementComponent cmComponent =
+                (ContextManagementComponent) components.stream().filter(
+                        component -> component instanceof ContextManagementComponent).findFirst().get();
         cmComponent.update(messageType, data);
-    }
-
-    @Override
-    public void registerComponent(IComponent component) {
-        components.add(component);
     }
 }
