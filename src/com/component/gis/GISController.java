@@ -3,6 +3,7 @@ package com.component.gis;
 import com.component.gis.warnings.IWarning;
 import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
+import com.database.utilities.DrawingContext;
 import com.dto.ContextPosition;
 import com.dto.ContextSituation;
 import com.dto.PositionPOI;
@@ -212,6 +213,11 @@ public class GISController {
 
   public void removeWarning(IWarning warning) {
     gisModel.getWarnings().remove(warning.getClass().getName());
+    gisModel.repaint();
+  }
+
+  public void setDrawingContext(DrawingContext drawingContext) {
+    gisModel.setDrawingContext(drawingContext);
     gisModel.repaint();
   }
 }

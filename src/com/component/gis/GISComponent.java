@@ -4,6 +4,7 @@ import com.component.IComponent;
 import com.component.IObserver;
 import com.component.gis.warnings.IWarning;
 import com.database.server.IGeoServer;
+import com.database.utilities.DrawingContext;
 import com.dto.MessageType;
 import com.mediator.IMediator;
 import com.rules.RuleEvaluator;
@@ -74,5 +75,9 @@ public class GISComponent implements IComponent, IObserver {
 
   public void removeWarning(IWarning warning) {
     controller.removeWarning(warning);
+  }
+
+  public void setDrawingContext(DrawingContext drawingContext) {
+    controller.setDrawingContext(drawingContext);
   }
 }

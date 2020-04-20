@@ -51,4 +51,30 @@
             </parameters>
         </action>
     </rule>
+    <rule>
+        <condition>current_time=Night</condition>
+        <action>
+            <class>com.component.gis.GISComponent</class>
+            <methodName>setDrawingContext</methodName>
+            <parameters>
+                <parameter>
+                    <parameterType>com.database.utilities.DrawingContext</parameterType>
+                    <parameterValue>com.database.utilities.NightModeDrawingContext</parameterValue>
+                </parameter>
+            </parameters>
+        </action>
+    </rule>
+    <rule>
+        <condition>current_time=Day</condition>
+        <action>
+            <class>com.component.gis.GISComponent</class>
+            <methodName>setDrawingContext</methodName>
+            <parameters>
+                <parameter>
+                    <parameterType>com.database.utilities.DrawingContext</parameterType>
+                    <parameterValue>com.database.utilities.DayModeDrawingContext</parameterValue>
+                </parameter>
+            </parameters>
+        </action>
+    </rule>
 </rules>

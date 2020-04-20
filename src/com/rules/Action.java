@@ -8,50 +8,30 @@ import java.lang.reflect.Method;
 
 public class Action {
 
+  public String className;
   public String methodName;
   public String parameterType;
   public String parameterValue;
-  public String className;
 
-  public boolean valid() {
-    return true;
-  }
-
-  public String getMethodName() {
-    return methodName;
+  public void setClassName(String className) {
+    this.className = className;
   }
 
   public void setMethodName(String methodName) {
     this.methodName = methodName;
   }
 
-  public String getParameterType() {
-    return parameterType;
-  }
-
   public void setParameterType(String parameterType) {
     this.parameterType = parameterType;
-  }
-
-  public String getParameterValue() {
-    return parameterValue;
   }
 
   public void setParameterValue(String parameterValue) {
     this.parameterValue = parameterValue;
   }
 
-  public String getClassName() {
-    return className;
-  }
-
-  public void setClassName(String className) {
-    this.className = className;
-  }
-
   public void execute() {
     try {
-      Class componentClass = Class.forName(className);
+      Class<?> componentClass = Class.forName(className);
 
       IComponent component = Mediator.getComponent(componentClass);
 
@@ -61,16 +41,12 @@ public class Action {
       }
 
       if (parameterType != null && parameterValue != null) {
-
-        Class parameterTypeClass = Class.forName(parameterType);
-        Class parameterValueClass = Class.forName(parameterValue);
-
+        Class<?> parameterTypeClass = Class.forName(parameterType);
+        Class<?> parameterValueClass = Class.forName(parameterValue);
         Method method = componentClass.getMethod(methodName, parameterTypeClass);
-
         method.invoke(component, parameterValueClass.getDeclaredConstructor().newInstance());
       } else {
         Method method = componentClass.getMethod(methodName);
-
         method.invoke(component);
       }
 

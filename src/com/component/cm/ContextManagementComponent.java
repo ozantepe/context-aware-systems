@@ -66,9 +66,11 @@ public class ContextManagementComponent implements IComponent, IObserver {
     VBox timeVBox = new VBox();
     Button timeButton = new Button("Get current time");
     timeButton.setOnAction(event -> getCurrentTime());
+    Button forwardTimeButton = new Button("Forward time by 6 hours");
+    forwardTimeButton.setOnAction(event -> forwardTime());
     Label timeLabel = new Label(ContextKey.TIME.getText());
     labels.put(ContextKey.TIME, timeLabel);
-    timeVBox.getChildren().addAll(timeButton, timeLabel);
+    timeVBox.getChildren().addAll(timeButton, forwardTimeButton, timeLabel);
 
     // Sliders
     VBox frequencyVBox = createSliderVBox(ContextKey.FREQUENCY, 1, 10, 2, 1);
@@ -146,6 +148,12 @@ public class ContextManagementComponent implements IComponent, IObserver {
     contextTime.setContextKey(ContextKey.TIME);
     contextTime.initCurrentTime();
     contextSituation.addContext(contextTime);
+    updateTimeGUI(contextTime);
+  }
+
+  private void forwardTime() {
+    ContextTime contextTime = (ContextTime) contextSituation.getContextElement(ContextKey.TIME);
+    contextTime.forwardCurrentTime();
     updateTimeGUI(contextTime);
   }
 

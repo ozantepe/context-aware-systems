@@ -3,6 +3,7 @@ package com.component.gis;
 import com.component.gis.warnings.IWarning;
 import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
+import com.database.utilities.DayModeDrawingContext;
 import com.database.utilities.DrawingContext;
 import com.database.utilities.Matrix;
 
@@ -23,6 +24,7 @@ public class GISModel {
   private List<GeoObject> geoObjects;
   private BufferedImage canvas;
   private Matrix matrix;
+  private DrawingContext drawingContext = new DayModeDrawingContext();
 
   private GeoObject userPosition;
 
@@ -48,6 +50,10 @@ public class GISModel {
   void setHeight(double height) {
     this.height = (int) height;
     canvas = null;
+  }
+
+  public void setDrawingContext(DrawingContext drawingContext) {
+    this.drawingContext = drawingContext;
   }
 
   public void addListener(IDataObserver observer) {
@@ -81,20 +87,20 @@ public class GISModel {
     Graphics g = canvas.getGraphics();
 
     // Clean up canvas
-    g.setColor(Color.lightGray);
+    g.setColor(drawingContext.getBackgroundColor());
     g.fillRect(0, 0, width, height);
 
     // Draw map
     g.setColor(Color.BLACK);
     for (GeoObject geoObject : geoObjects) {
       if (matrix != null) {
-        DrawingContext.drawObject(geoObject, g, matrix);
+        drawingContext.drawObject(geoObject, g, matrix);
       }
     }
 
     // Draw current user position
     if (userPosition != null && matrix != null) {
-      DrawingContext.drawObject(userPosition, g, matrix);
+      drawingContext.drawObject(userPosition, g, matrix);
     }
 
     // Draw warning images
