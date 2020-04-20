@@ -1,5 +1,6 @@
 package com.component.gis;
 
+import com.component.gis.warnings.IWarning;
 import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
 import com.database.utilities.DrawingContext;
@@ -8,7 +9,9 @@ import com.database.utilities.Matrix;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GISModel {
 
@@ -23,12 +26,18 @@ public class GISModel {
 
   private GeoObject userPosition;
 
+  public Map<String, IWarning> warnings = new HashMap<>();
+
   public List<GeoObject> getGeoObjects() {
     return geoObjects;
   }
 
   public void setUserPosition(GeoObject userPosition) {
     this.userPosition = userPosition;
+  }
+
+  public Map<String, IWarning> getWarnings() {
+    return warnings;
   }
 
   void setWidth(double width) {
@@ -86,6 +95,14 @@ public class GISModel {
     // Draw current user position
     if (userPosition != null && matrix != null) {
       DrawingContext.drawObject(userPosition, g, matrix);
+    }
+
+    // Draw warning images
+    int yPos = 10;
+    for (IWarning warning : warnings.values()) {
+      g.drawImage(warning.getImage(), 10, yPos, null);
+      yPos += warning.getImage().getHeight(null);
+      yPos += 10;
     }
 
     update(canvas);

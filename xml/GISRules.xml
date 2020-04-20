@@ -1,0 +1,54 @@
+<rules>
+    <rule>
+        <condition>current_temp &lt; 4</condition>
+        <action>
+            <class>com.component.gis.GISComponent</class>
+            <methodName>showWarning</methodName>
+            <parameters>
+                <parameter>
+                    <parameterType>com.component.gis.warnings.IWarning</parameterType>
+                    <parameterValue>com.component.gis.warnings.WinterWarning</parameterValue>
+                </parameter>
+            </parameters>
+        </action>
+    </rule>
+    <rule>
+        <condition>current_temp &gt; 4</condition>
+        <action>
+            <class>com.component.gis.GISComponent</class>
+            <methodName>removeWarning</methodName>
+            <parameters>
+                <parameter>
+                    <parameterType>com.component.gis.warnings.IWarning</parameterType>
+                    <parameterValue>com.component.gis.warnings.WinterWarning</parameterValue>
+                </parameter>
+            </parameters>
+        </action>
+    </rule>
+    <rule>
+        <condition>current_temp &gt; 40</condition>
+        <action>
+            <class>com.component.gis.GISComponent</class>
+            <methodName>showWarning</methodName>
+            <parameters>
+                <parameter>
+                    <parameterType>com.component.gis.warnings.IWarning</parameterType>
+                    <parameterValue>com.component.gis.warnings.HeatWarning</parameterValue>
+                </parameter>
+            </parameters>
+        </action>
+    </rule>
+    <rule>
+        <condition>current_temp &lt; 40</condition>
+        <action>
+            <class>com.component.gis.GISComponent</class>
+            <methodName>removeWarning</methodName>
+            <parameters>
+                <parameter>
+                    <parameterType>com.component.gis.warnings.IWarning</parameterType>
+                    <parameterValue>com.component.gis.warnings.HeatWarning</parameterValue>
+                </parameter>
+            </parameters>
+        </action>
+    </rule>
+</rules>

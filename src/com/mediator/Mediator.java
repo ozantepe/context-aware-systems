@@ -19,7 +19,7 @@ public class Mediator extends Application implements IMediator {
 
   private static String COMPONENT_COMPOSITION_FILE_NAME;
 
-  private List<IComponent> components;
+  private static List<IComponent> components;
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -94,5 +94,14 @@ public class Mediator extends Application implements IMediator {
                             .findFirst()
                             .get();
     cmComponent.update(messageType, data);
+  }
+
+  public static IComponent getComponent(Class componentClass) {
+    for (IComponent component : components) {
+      if (componentClass.isInstance(component)) {
+        return component;
+      }
+    }
+    return null;
   }
 }

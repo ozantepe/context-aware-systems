@@ -1,10 +1,12 @@
 package com.component.gis;
 
+import com.component.gis.warnings.IWarning;
 import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
 import com.dto.ContextPosition;
 import com.dto.ContextSituation;
 import com.dto.PositionPOI;
+import com.rules.RuleEvaluator;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Rectangle2D;
@@ -14,6 +16,7 @@ import javafx.scene.input.ScrollEvent;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Map;
 import java.util.Set;
 
 public class GISController {
@@ -24,9 +27,12 @@ public class GISController {
   private Point2D.Double dragStartPoint;
   public static final double ZOOM_SCALE = 1.3;
 
-  GISController(GISModel gisModel, IGeoServer geoServer) {
+  private final RuleEvaluator ruleEvaluator;
+
+  GISController(GISModel gisModel, IGeoServer geoServer, RuleEvaluator ruleEvaluator) {
     this.gisModel = gisModel;
     this.gisModel.setGeoServer(geoServer);
+    this.ruleEvaluator = ruleEvaluator;
   }
 
   void loadData() {
@@ -192,7 +198,20 @@ public class GISController {
                       }
                     });
 
-    // TODO: evaluate rules according to other context elements
+    ruleEvaluator.evaluateAndExecute(contextSituation.getContextElementsAsRuleMap());
+    gisModel.repaint();
+  }
+
+  public void showWarning(IWarning warning) {
+    Map<String, IWarning> warnings = gisModel.getWarnings();
+    if (!warnings.containsKey(warning.getClass().getName())) {
+      warnings.put(warning.getClass().getName(), warning);
+    }
+    gisModel.repaint();
+  }
+
+  public void removeWarning(IWarning warning) {
+    gisModel.getWarnings().remove(warning.getClass().getName());
     gisModel.repaint();
   }
 }

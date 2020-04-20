@@ -1,0 +1,184 @@
+options {
+    STATIC = false;
+}
+
+PARSER_BEGIN(RuleCompiler)
+    package com.rules.rulecompiler.generated;
+
+    import com.rules.rulecompiler.ruletree.*;
+
+    import java.io.InputStream;
+    import java.io.ByteArrayInputStream;
+
+    public class RuleCompiler {
+        static RuleCompiler compiler = null;
+
+        public static TreeNode evaluate(String expr) throws ParseException {
+            InputStream input = new ByteArrayInputStream(expr.getBytes());
+            if (compiler == null) {
+              compiler = new RuleCompiler(input);
+            } else {
+              compiler.ReInit(input);
+            }
+            return compiler.expr();
+        }
+
+        public static void main(String[] argv) {
+            try {
+              TreeNode tree = RuleCompiler.evaluate(argv[0]);
+              System.out.println(tree);
+            } catch (Exception detail) {
+              detail.printStackTrace();
+            }
+        }
+    }
+PARSER_END(RuleCompiler)
+
+//Examples:
+//temp_now < | > <INT>
+//fuel_now < | > <INT>
+//daytime_now = Night | Day
+
+SKIP : { " " | "\t" | "\n" | "\r" }
+
+TOKEN_MGR_DECLS : {
+    private static StringBuilder debugSb = null;
+
+    public static void enableDebugStrings(){
+        debugSb = new StringBuilder();
+    }
+
+    public static String getDebugString(){
+        if(debugSb == null)
+            return "";
+
+        String debugOutput = debugSb.toString();
+        debugSb.setLength(0);
+        return debugOutput;
+    }
+
+    private static void debugAppend(String _msg){
+        if(debugSb != null){
+            debugSb.append(_msg);
+        }
+    }
+}
+
+TOKEN : {
+      <INT:                               (["1"-"9"] (["0"-"9"])* | "0")>    { debugAppend("INT ");            }
+    | <DAYTIME:                           ("Day"|"Night")>                   { debugAppend("daytime(const) "); }
+    | <EQUALS:                            ("=")>                             { debugAppend("EQUALS ");         }
+    | <LESS:                              ("<")>                             { debugAppend("LESS ");           }
+    | <GREATER:                           (">")>                             { debugAppend("GREATER ");        }
+    | <CONTEXT_IDENTIFIER_TIME:           ("current_time")>                  { debugAppend("daytime(var) ");   }
+    | <CONTEXT_IDENTIFIER_FUEL_STATUS:    ("current_fuel_status")>           { debugAppend("fuel(var) ");      }
+    | <CONTEXT_IDENTIFIER_TEMP:           ("current_temp")>                  { debugAppend("temp(var) ");      }
+}
+
+TreeNode expr() : {
+    TreeNode root;
+}
+{
+    root = stmt() <EOF>
+    {
+        return root;
+    }
+}
+
+TreeNode stmt() : {
+    TreeNode node = null;
+}
+{
+    node = condition() {
+        return node;
+    }
+}
+
+TreeNode condition() : {
+    TreeNode conditionNode;
+}
+{
+      conditionNode = tempStmt()     { return conditionNode; }
+    | conditionNode = fuelStmt()     { return conditionNode; }
+    | conditionNode = daytimeStmt()  { return conditionNode; }
+}
+
+TreeNode tempStmt() : {
+    Token variableToken;
+    TreeNode compareNode;
+}
+{
+    variableToken = <CONTEXT_IDENTIFIER_TEMP> compareNode = numberComparison()
+    {
+        TreeNode variableNode = new VariableNode(variableToken.image);
+        compareNode.setNodeA(variableNode);
+        return compareNode;
+    }
+}
+
+TreeNode fuelStmt() : {
+    Token variableToken;
+    TreeNode compareNode;
+}
+{
+    variableToken = <CONTEXT_IDENTIFIER_FUEL_STATUS> compareNode = numberComparison()
+    {
+        TreeNode variableNode = new VariableNode(variableToken.image);
+        compareNode.setNodeA(variableNode);
+        return compareNode;
+    }
+}
+
+TreeNode daytimeStmt() : {
+    Token variableToken;
+    TreeNode compareNode;
+}
+{
+    variableToken = <CONTEXT_IDENTIFIER_TIME> compareNode = daytimeComparison()
+    {
+        TreeNode variableNode = new VariableNode(variableToken.image);
+        compareNode.setNodeA(variableNode);
+        return compareNode;
+    }
+}
+
+TreeNode numberComparison() : {
+    TreeNode compareNode, numberNode;
+}
+{
+    compareNode = comparison() numberNode = number()
+    {
+        compareNode.setNodeB(numberNode);
+        return compareNode;
+    }
+}
+
+TreeNode comparison() : {}
+{
+      <GREATER>     { return new CompareGreaterNode();  }
+    | <LESS>        { return new CompareLessNode();     }
+    | <EQUALS>      { return new CompareEqualsNode();   }
+}
+
+TreeNode daytimeComparison() : {
+    Token daytimeToken;
+}
+{
+    <EQUALS> daytimeToken = <DAYTIME>
+    {
+        TreeNode constantNode = new ConstantStringNode(daytimeToken.image);
+        TreeNode compareNode = new CompareEqualsNode();
+        compareNode.setNodeB(constantNode);
+        return compareNode;
+    }
+}
+
+TreeNode number() : {
+    Token numberToken;
+}
+{
+    numberToken = <INT>
+    {
+        return new ConstantIntNode(numberToken.image);
+    }
+}
