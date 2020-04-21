@@ -149,37 +149,37 @@ public abstract class DrawingContext {
                 case 9008:
                 case 9009:
                 case 9010:
-        case 9011:
-        case 9012:
-        case 9013:
-        case 9014:
-        case 9015:
-        case 9016:
-        case 9017:
-        case 9018:
-        case 9019:
-        case 9020:
-        case 9021:
-        case 9022:
-        case 9023:
-        case 9024:
-        case 9025:
-        case 9026:
-        case 9027:
-        case 9028:
-        case 9099:
-        case 10001: // amenity:
-        case 10002:
-        case 10004:
-        case 10005:
-        case 10006:
-        case 10008:
-        case 10009:
-        case 10010:
-        case 10012:
-        case 10013:
-        case 10014:
-        case 10015:
+                case 9011:
+                case 9012:
+                case 9013:
+                case 9014:
+                case 9015:
+                case 9016:
+                case 9017:
+                case 9018:
+                case 9019:
+                case 9020:
+                case 9021:
+                case 9022:
+                case 9023:
+                case 9024:
+                case 9025:
+                case 9026:
+                case 9027:
+                case 9028:
+                case 9099:
+                case 10001: // amenity:
+                case 10002:
+                case 10004:
+                case 10005:
+                case 10006:
+                case 10008:
+                case 10009:
+                case 10010:
+                case 10012:
+                case 10013:
+                case 10014:
+                case 10015:
                 case 10016:
                 case 10017:
                 case 10018:
@@ -244,8 +244,8 @@ public abstract class DrawingContext {
                     50,
                     50,
                     null);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
   }
 }

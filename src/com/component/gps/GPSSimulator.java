@@ -14,37 +14,37 @@ import java.io.IOException;
  */
 public class GPSSimulator extends BufferedReader {
 
-	/// private filter string, used to identify information blocks
-	private String mFilter;
-	/// private sleep time, which is used after each data block
-	private int mSleep;
+    /// private filter string, used to identify information blocks
+    private String mFilter;
+    /// private sleep time, which is used after each data block
+    private int mSleep;
 
-	/**
-	 * Constructor for the GPS simulator. It opens a file and provides its input line wise through the
-	 * use of the readline() method. After each data block (identified through a filter stmt) the
-	 * system actively blocks
-	 *
-	 * @param _file   The file to be used as input
-	 * @param _filter The filter stmt used to identify a new block
-	 * @param _sleep  The amount of milliseconds the method blocks until a new data block is returned
-	 * @throws FileNotFoundException
-	 */
-	public GPSSimulator(String _file, String _filter, int _sleep) throws FileNotFoundException {
-		super(new FileReader(_file));
-		mFilter = _filter;
-		mSleep = _sleep;
-	}
+    /**
+     * Constructor for the GPS simulator. It opens a file and provides its input line wise through the
+     * use of the readline() method. After each data block (identified through a filter stmt) the
+     * system actively blocks
+     *
+     * @param _file   The file to be used as input
+     * @param _filter The filter stmt used to identify a new block
+     * @param _sleep  The amount of milliseconds the method blocks until a new data block is returned
+     * @throws FileNotFoundException
+     */
+    public GPSSimulator(String _file, String _filter, int _sleep) throws FileNotFoundException {
+        super(new FileReader(_file));
+        mFilter = _filter;
+        mSleep = _sleep;
+    }
 
-	@Override
-	public String readLine() throws IOException {
-		String line = super.readLine();
-		if (line != null && line.contains(mFilter)) {
-			try {
-				Thread.sleep(mSleep);
-			} catch (InterruptedException _e) {
-				_e.printStackTrace();
-			}
-		}
-		return line;
-	}
+    @Override
+    public String readLine() throws IOException {
+        String line = super.readLine();
+        if (line != null && line.contains(mFilter)) {
+            try {
+                Thread.sleep(mSleep);
+            } catch (InterruptedException _e) {
+                _e.printStackTrace();
+            }
+        }
+        return line;
+    }
 }

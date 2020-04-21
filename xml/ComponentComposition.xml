@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components>
-    <component name="com.component.gis.GISComponent"/>
+    <component
+            name="com.component.gis.GISComponent"
+            methodName="setDrawingContext"
+            methodParameterType="com.database.utilities.DrawingContext"
+            methodParameterClass="com.database.utilities.DayModeDrawingContext"
+    />
     <component name="com.component.gps.GPSComponent"/>
     <component name="com.component.poi.POIComponent"/>
     <component name="com.component.aal.AALComponent"/>

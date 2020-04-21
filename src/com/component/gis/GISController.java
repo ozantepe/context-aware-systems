@@ -218,6 +218,5 @@ public class GISController {
 
   public void setDrawingContext(DrawingContext drawingContext) {
     gisModel.setDrawingContext(drawingContext);
-    gisModel.repaint();
   }
 }

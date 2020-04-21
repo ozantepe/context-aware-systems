@@ -193,7 +193,7 @@ public class NMEAParser implements Runnable {
    * available.
    *
    * @param _talkerId The id of the information provider (GPS, Galileo, GLONASS, ...)
-   * @param _data     The data set of the GSA data line
+   * @param _data The data set of the GSA data line
    */
   private void parseGSA(String _talkerId, String[] _data) {
     // 0 --> selection mode
@@ -221,7 +221,7 @@ public class NMEAParser implements Runnable {
    * Method that parses GGA data sentences.
    *
    * @param _talkerId The id of the information provider (GPS, Galileo, GLONASS, ...)
-   * @param _data     The data set of the GSV data line
+   * @param _data The data set of the GSV data line
    */
   private void parseGGA(String _talkerId, String[] _data) {
     //  0 --> UTC time
@@ -303,9 +303,7 @@ public class NMEAParser implements Runnable {
     } // for mListeners
   }
 
-  /**
-   * Method that closes the thread and stops the GPS simulator
-   */
+  /** Method that closes the thread and stops the GPS simulator */
   public void close() {
     mRUN = false;
     mT.interrupt();

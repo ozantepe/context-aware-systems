@@ -75,9 +75,7 @@ public class Matrix {
     return copy();
   }
 
-  /**
-   * Generates a copy of the matrix
-   */
+  /** Generates a copy of the matrix */
   public Matrix copy() {
     return new Matrix(this);
   }

@@ -41,16 +41,16 @@ public class TimeView extends Pane implements INMEAUpdate {
   @Override
   public void update(NMEAInfo _data) {
     if (_data != null) {
-      // outside main UI-Thread ...
-      Platform.runLater(
-              new Runnable() {
-                @Override
-                public void run() {
-                  String time = _data.getTime();
-                  Text timeL = (Text) TimeView.this.lookup("#" + TIME_VALUE_ID);
-                  timeL.setText(time);
-                }
-              });
+        // outside main UI-Thread ...
+        Platform.runLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        String time = _data.getTime();
+                        Text timeL = (Text) TimeView.this.lookup("#" + TIME_VALUE_ID);
+                        timeL.setText(time);
+                    }
+                });
     }
   }
 }

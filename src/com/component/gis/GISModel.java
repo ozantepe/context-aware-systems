@@ -3,7 +3,6 @@ package com.component.gis;
 import com.component.gis.warnings.IWarning;
 import com.database.feature.GeoObject;
 import com.database.server.IGeoServer;
-import com.database.utilities.DayModeDrawingContext;
 import com.database.utilities.DrawingContext;
 import com.database.utilities.Matrix;
 
@@ -24,7 +23,7 @@ public class GISModel {
   private List<GeoObject> geoObjects;
   private BufferedImage canvas;
   private Matrix matrix;
-  private DrawingContext drawingContext = new DayModeDrawingContext();
+  private DrawingContext drawingContext;
 
   private GeoObject userPosition;
 

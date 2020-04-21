@@ -118,48 +118,48 @@ public class DataView extends Pane implements INMEAUpdate {
     if (_data != null) {
       Platform.runLater(
               new Runnable() {
-                @Override
-                public void run() {
-                  DecimalFormat df = new DecimalFormat("#.######");
-                  double lat = _data.getLatitude();
-                  Label latL = (Label) DataView.this.lookup("#" + LAT_VALUE_ID);
-                  latL.setText(String.valueOf(df.format(lat)));
+                  @Override
+                  public void run() {
+                      DecimalFormat df = new DecimalFormat("#.######");
+                      double lat = _data.getLatitude();
+                      Label latL = (Label) DataView.this.lookup("#" + LAT_VALUE_ID);
+                      latL.setText(String.valueOf(df.format(lat)));
 
-                  double lon = _data.getLongitude();
-                  Label lonL = (Label) DataView.this.lookup("#" + LON_VALUE_ID);
-                  lonL.setText(String.valueOf(df.format(lon)));
+                      double lon = _data.getLongitude();
+                      Label lonL = (Label) DataView.this.lookup("#" + LON_VALUE_ID);
+                      lonL.setText(String.valueOf(df.format(lon)));
 
-                  double alt = _data.getHeight();
-                  Label altL = (Label) DataView.this.lookup("#" + ALT_VALUE_ID);
-                  altL.setText(String.valueOf(df.format(alt)));
+                      double alt = _data.getHeight();
+                      Label altL = (Label) DataView.this.lookup("#" + ALT_VALUE_ID);
+                      altL.setText(String.valueOf(df.format(alt)));
 
-                  double pdop = _data.getPDOP();
-                  Label pdopL = (Label) DataView.this.lookup("#" + PDOP_VALUE_ID);
-                  pdopL.setText(String.valueOf(df.format(pdop)));
+                      double pdop = _data.getPDOP();
+                      Label pdopL = (Label) DataView.this.lookup("#" + PDOP_VALUE_ID);
+                      pdopL.setText(String.valueOf(df.format(pdop)));
 
-                  double hdop = _data.getHDOP();
-                  Label hdopL = (Label) DataView.this.lookup("#" + HDOP_VALUE_ID);
-                  hdopL.setText(String.valueOf(df.format(hdop)));
+                      double hdop = _data.getHDOP();
+                      Label hdopL = (Label) DataView.this.lookup("#" + HDOP_VALUE_ID);
+                      hdopL.setText(String.valueOf(df.format(hdop)));
 
-                  double vdop = _data.getVDOP();
-                  Label vdopL = (Label) DataView.this.lookup("#" + VDOP_VALUE_ID);
-                  vdopL.setText(String.valueOf(df.format(vdop)));
+                      double vdop = _data.getVDOP();
+                      Label vdopL = (Label) DataView.this.lookup("#" + VDOP_VALUE_ID);
+                      vdopL.setText(String.valueOf(df.format(vdop)));
 
-                  int val = _data.getUsedSat();
-                  Color c = null;
-                  if (val < 3) {
-                    // red background
-                    c = Color.LIGHTSALMON;
-                  } else if (val < 5) {
-                    // yellow background
-                    c = Color.LIGHTYELLOW;
-                  } else {
-                    // green background
-                    c = Color.LIGHTSEAGREEN;
+                      int val = _data.getUsedSat();
+                      Color c = null;
+                      if (val < 3) {
+                          // red background
+                          c = Color.LIGHTSALMON;
+                      } else if (val < 5) {
+                          // yellow background
+                          c = Color.LIGHTYELLOW;
+                      } else {
+                          // green background
+                          c = Color.LIGHTSEAGREEN;
+                      }
+                      DataView.this.setBackground(
+                              new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                   }
-                  DataView.this.setBackground(
-                          new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
-                }
               });
     }
   }

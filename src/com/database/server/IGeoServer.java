@@ -1,13 +1,12 @@
 package com.database.server;
 
-
 import com.database.feature.GeoObject;
 
 import java.util.List;
 
 public interface IGeoServer {
 
-    String getConn();
+  String getConn();
 
     String getUser();
 

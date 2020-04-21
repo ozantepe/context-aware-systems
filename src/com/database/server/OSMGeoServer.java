@@ -36,39 +36,39 @@ public class OSMGeoServer implements IGeoServer {
           "SELECT * FROM osm_railway AS a" /**/
   };
 
-  private static String BBOX =
-          "WHERE a.geom && ST_MakeEnvelope(14.084774, 48.132875, 14.540614, 48.448764)";
+    private static String BBOX =
+            "WHERE a.geom && ST_MakeEnvelope(14.084774, 48.132875, 14.540614, 48.448764)";
 
-  public static final String USER = "geo";
-  public static final String PASS = "geo";
-  public static final String CONN = "jdbc:postgresql://localhost:5432/osm";
+    public static final String USER = "geo";
+    public static final String PASS = "geo";
+    public static final String CONN = "jdbc:postgresql://localhost:5432/osm";
 
-  /**
-   * @param _user geo
-   * @param _pass geo
-   * @param _con  jdbc:postgresql://localhost:5432/OSM_Austria
-   * @return true, if connection established
-   */
-  public boolean connect(String _con, String _user, String _pass) {
-    try {
-      Class.forName("org.postgis.DriverWrapper");
-      mConn = DriverManager.getConnection(_con, _user, _pass);
-      /* Add the geometry types to the connection. */
-      PGConnection c = (PGConnection) mConn;
-      c.addDataType(
-              "geometry", (Class<? extends PGobject>) Class.forName("org.postgis.PGgeometry"));
-      c.addDataType("box2d", (Class<? extends PGobject>) Class.forName("org.postgis.PGbox2d"));
-    } catch (SQLException | ClassNotFoundException e) {
-      e.printStackTrace();
-      return false;
+    /**
+     * @param _user geo
+     * @param _pass geo
+     * @param _con  jdbc:postgresql://localhost:5432/OSM_Austria
+     * @return true, if connection established
+     */
+    public boolean connect(String _con, String _user, String _pass) {
+        try {
+            Class.forName("org.postgis.DriverWrapper");
+            mConn = DriverManager.getConnection(_con, _user, _pass);
+            /* Add the geometry types to the connection. */
+            PGConnection c = (PGConnection) mConn;
+            c.addDataType(
+                    "geometry", (Class<? extends PGobject>) Class.forName("org.postgis.PGgeometry"));
+            c.addDataType("box2d", (Class<? extends PGobject>) Class.forName("org.postgis.PGbox2d"));
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
-    return true;
-  }
 
-  @Override
-  public List<GeoObject> loadData() {
-    return getData(mQueries);
-  }
+    @Override
+    public List<GeoObject> loadData() {
+        return getData(mQueries);
+    }
 
   public List<GeoObject> getData(String[] _queries) {
     System.out.println("loading data ... ");
@@ -91,103 +91,103 @@ public class OSMGeoServer implements IGeoServer {
             GeoObject obj = new GeoObject(id, type);
             PGgeometry geom = (PGgeometry) r.getObject("geom");
             switch (geom.getGeoType()) {
-              case Geometry.POINT: {
-                //			    	System.out.println("found object ("+ id + ") Point ... ");
-                Geometry g = geom.getGeometry();
-                org.postgis.Point pPG = g.getPoint(0);
-                Point pt = new Point((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
-                AGeoObjectPart part = new GeoObjectPart_Point(pt, GeoObjectPartType.MAIN);
-                obj.addPart(part);
-              }
-              break;
-              case Geometry.LINESTRING: {
-                //			    	System.out.println("found object ("+ id + ") Line ... ");
-                Geometry g = geom.getGeometry();
-                Point[] pts = new Point[g.numPoints()];
-                for (int i = 0; i < g.numPoints(); i++) {
-                  org.postgis.Point pPG = g.getPoint(i);
-                  pts[i] = new Point((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                case Geometry.POINT: {
+                    //			    	System.out.println("found object ("+ id + ") Point ... ");
+                    Geometry g = geom.getGeometry();
+                    org.postgis.Point pPG = g.getPoint(0);
+                    Point pt = new Point((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                    AGeoObjectPart part = new GeoObjectPart_Point(pt, GeoObjectPartType.MAIN);
+                    obj.addPart(part);
                 }
-                AGeoObjectPart part = new GeoObjectPart_Linestring(pts, GeoObjectPartType.MAIN);
-                obj.addPart(part);
-              }
-              break;
-              case Geometry.POLYGON: {
-                //			    	System.out.println("found object ("+ id + ") Polygon ... ");
-                String wkt = geom.toString();
-                org.postgis.Polygon p = new org.postgis.Polygon(wkt);
-                if (p.numRings() > 1) {
-                  Polygon poly = new Polygon();
-                  // Ring 0 --> main polygon ... rest should be holes
-                  LinearRing ring = p.getRing(0);
-                  for (int i = 0; i < ring.numPoints(); i++) {
-                    org.postgis.Point pPG = ring.getPoint(i);
-                    poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
-                  }
-                  AGeoObjectPart main = new GeoObjectPart_Area(poly, GeoObjectPartType.MAIN);
-                  // extract the holes
-                  for (int j = 1; j < p.numRings(); j++) {
-                    ring = p.getRing(j);
-                    poly = new Polygon();
-                    for (int k = 0; k < ring.numPoints(); k++) {
-                      org.postgis.Point pPG = ring.getPoint(k);
-                      poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
-                    } // for points
-                    AGeoObjectPart hole = new GeoObjectPart_Area(poly, GeoObjectPartType.HOLE);
-                    main.addPart(hole);
-                  } // for holes
-                  obj.addPart(main);
-                } else { // poly without holes
-                  Polygon poly = new Polygon();
-                  for (int i = 0; i < p.numPoints(); i++) {
-                    org.postgis.Point pPG = p.getPoint(i);
-                    poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
-                  }
-                  AGeoObjectPart part = new GeoObjectPart_Area(poly, GeoObjectPartType.MAIN);
-                  obj.addPart(part);
-                } // poly with or without holes
-              }
-              break;
-              case Geometry.MULTIPOLYGON: {
-                //			    	System.out.println("found object ("+ id + ") MultiPolygon ... ");
-                String wkt = geom.toString();
-                org.postgis.MultiPolygon mp = new org.postgis.MultiPolygon(wkt);
-                for (int i = 0; i < mp.getPolygons().length; i++) {
-                  // iterate over polygon
-                  org.postgis.Polygon p = mp.getPolygons()[i];
-                  GeoObjectPartType partType;
-                  if (i == 0) {
-                    // first poly is primary ...
-                    partType = GeoObjectPartType.MAIN;
-                  } else {
-                    // next  polys are exclaves ...
-                    partType = GeoObjectPartType.EXCLAVE;
-                  }
-                  Polygon poly = new Polygon();
-                  // first ring is exterior polygonal shape
-                  LinearRing ring = p.getRing(0);
-                  for (int j = 0; j < ring.numPoints(); j++) {
-                    org.postgis.Point pPG = ring.getPoint(j);
-                    poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
-                  }
-                  AGeoObjectPart part = new GeoObjectPart_Area(poly, partType);
-                  // next rings are holes
-                  // extract the holes
-                  for (int j = 1; j < p.numRings(); j++) {
-                    ring = p.getRing(j);
-                    poly = new Polygon();
-                    for (int k = 0; k < ring.numPoints(); k++) {
-                      org.postgis.Point pPG = ring.getPoint(k);
-                      poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                break;
+                case Geometry.LINESTRING: {
+                    //			    	System.out.println("found object ("+ id + ") Line ... ");
+                    Geometry g = geom.getGeometry();
+                    Point[] pts = new Point[g.numPoints()];
+                    for (int i = 0; i < g.numPoints(); i++) {
+                        org.postgis.Point pPG = g.getPoint(i);
+                        pts[i] = new Point((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
                     }
-                    AGeoObjectPart hole = new GeoObjectPart_Area(poly, GeoObjectPartType.HOLE);
-                    part.addPart(hole);
-                  } // for all holes
-                  obj.addPart(part);
-                } // for all exclaves/parts
-                data.add(obj);
-              }
-              break;
+                    AGeoObjectPart part = new GeoObjectPart_Linestring(pts, GeoObjectPartType.MAIN);
+                    obj.addPart(part);
+                }
+                break;
+                case Geometry.POLYGON: {
+                    //			    	System.out.println("found object ("+ id + ") Polygon ... ");
+                    String wkt = geom.toString();
+                    org.postgis.Polygon p = new org.postgis.Polygon(wkt);
+                    if (p.numRings() > 1) {
+                        Polygon poly = new Polygon();
+                        // Ring 0 --> main polygon ... rest should be holes
+                        LinearRing ring = p.getRing(0);
+                        for (int i = 0; i < ring.numPoints(); i++) {
+                            org.postgis.Point pPG = ring.getPoint(i);
+                            poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                        }
+                        AGeoObjectPart main = new GeoObjectPart_Area(poly, GeoObjectPartType.MAIN);
+                        // extract the holes
+                        for (int j = 1; j < p.numRings(); j++) {
+                            ring = p.getRing(j);
+                            poly = new Polygon();
+                            for (int k = 0; k < ring.numPoints(); k++) {
+                                org.postgis.Point pPG = ring.getPoint(k);
+                                poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                            } // for points
+                            AGeoObjectPart hole = new GeoObjectPart_Area(poly, GeoObjectPartType.HOLE);
+                            main.addPart(hole);
+                        } // for holes
+                        obj.addPart(main);
+                    } else { // poly without holes
+                        Polygon poly = new Polygon();
+                        for (int i = 0; i < p.numPoints(); i++) {
+                            org.postgis.Point pPG = p.getPoint(i);
+                            poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                        }
+                        AGeoObjectPart part = new GeoObjectPart_Area(poly, GeoObjectPartType.MAIN);
+                        obj.addPart(part);
+                    } // poly with or without holes
+                }
+                break;
+                case Geometry.MULTIPOLYGON: {
+                    //			    	System.out.println("found object ("+ id + ") MultiPolygon ... ");
+                    String wkt = geom.toString();
+                    org.postgis.MultiPolygon mp = new org.postgis.MultiPolygon(wkt);
+                    for (int i = 0; i < mp.getPolygons().length; i++) {
+                        // iterate over polygon
+                        org.postgis.Polygon p = mp.getPolygons()[i];
+                        GeoObjectPartType partType;
+                        if (i == 0) {
+                            // first poly is primary ...
+                            partType = GeoObjectPartType.MAIN;
+                        } else {
+                            // next  polys are exclaves ...
+                            partType = GeoObjectPartType.EXCLAVE;
+                        }
+                        Polygon poly = new Polygon();
+                        // first ring is exterior polygonal shape
+                        LinearRing ring = p.getRing(0);
+                        for (int j = 0; j < ring.numPoints(); j++) {
+                            org.postgis.Point pPG = ring.getPoint(j);
+                            poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                        }
+                        AGeoObjectPart part = new GeoObjectPart_Area(poly, partType);
+                        // next rings are holes
+                        // extract the holes
+                        for (int j = 1; j < p.numRings(); j++) {
+                            ring = p.getRing(j);
+                            poly = new Polygon();
+                            for (int k = 0; k < ring.numPoints(); k++) {
+                                org.postgis.Point pPG = ring.getPoint(k);
+                                poly.addPoint((int) (pPG.x * OFFSET), (int) (pPG.y * OFFSET));
+                            }
+                            AGeoObjectPart hole = new GeoObjectPart_Area(poly, GeoObjectPartType.HOLE);
+                            part.addPart(hole);
+                        } // for all holes
+                        obj.addPart(part);
+                    } // for all exclaves/parts
+                    data.add(obj);
+                }
+                break;
             } // switch geotype
             data.add(obj);
           } catch (Exception _e) {
